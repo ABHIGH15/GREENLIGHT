@@ -109,6 +109,43 @@ class TestPipelineArchitecture(unittest.TestCase):
         self.assertIsNotNone(runner)
         self.assertEqual(runner.agent.name, "GreenlightClearancePipeline")
 
+    def test_schema_normalization(self):
+        from api.models import RiskItem, SummaryStats, ClearanceReport, RiskCategory, RiskSeverity
+
+        # 1. RiskItem normalizes issue and recommendation aliases
+        item = RiskItem(
+            id="RISK-NAME-01",
+            entity="Test Person",
+            category="NAME",
+            severity="HIGH",
+            issue="Real person collision with living official",
+            recommendation="Rename to fictional surname"
+        )
+        self.assertEqual(item.description, "Real person collision with living official")
+        self.assertEqual(item.recommended_action, "Rename to fictional surname")
+        self.assertEqual(item.issue, item.description)
+        self.assertEqual(item.recommendation, item.recommended_action)
+
+        # 2. SummaryStats normalizes total_risks / high_risks aliases
+        stats = SummaryStats.model_validate({
+            "total_risks": 4,
+            "high_risks": 2,
+            "medium_risks": 1,
+            "low_risks": 1
+        })
+        self.assertEqual(stats.total_flags, 4)
+        self.assertEqual(stats.high_severity, 2)
+        self.assertEqual(stats.medium_severity, 1)
+        self.assertEqual(stats.low_severity, 1)
+
+    def test_rate_limiter_setup(self):
+        from services.rate_limiter import setup_adk_rate_limiter
+        from google.adk.models.google_llm import Gemini
+
+        setup_adk_rate_limiter()
+        # Verify patched method name
+        self.assertEqual(Gemini.generate_content_async.__name__, "paced_generate_content_async")
+
 
 if __name__ == "__main__":
     unittest.main()

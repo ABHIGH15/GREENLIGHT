@@ -1,3 +1,4 @@
+import os
 import logging
 from typing import Optional
 from google.adk.agents import SequentialAgent, ParallelAgent
@@ -11,7 +12,7 @@ from tools.parallel_mcp import create_parallel_toolset
 logger = logging.getLogger("greenlight.agents.pipeline")
 
 
-def build_greenlight_pipeline(model: str = "gemini-2.0-flash") -> SequentialAgent:
+def build_greenlight_pipeline(model: Optional[str] = None) -> SequentialAgent:
     """Constructs the complete GREENLIGHT multi-agent clearance pipeline in Google ADK.
     
     Architecture:
@@ -24,20 +25,18 @@ def build_greenlight_pipeline(model: str = "gemini-2.0-flash") -> SequentialAgen
       Stage 3 (Sequential): RiskSynthesizerAgent unifies findings, scores severity,
         and outputs the final ClearanceReport for E&O underwriting.
     """
-    logger.info("Initializing Parallel MCP Toolset...")
-    parallel_tools = []
-    toolset = create_parallel_toolset()
-    if toolset:
-        parallel_tools.append(toolset)
+    chosen_model = model or os.environ.get("GEMINI_MODEL", "gemini-3.5-flash-lite")
+    logger.info(f"Initializing Parallel MCP Toolset for pipeline with model '{chosen_model}'...")
+    parallel_tools = create_parallel_toolset()
 
     logger.info("Instantiating ADK clearance agents...")
     # Stage 1: Entity Parsing
-    parser_agent = create_script_parser_agent(model=model)
+    parser_agent = create_script_parser_agent(model=chosen_model)
 
     # Stage 2: Concurrent Clearance Specialists
-    name_agent = create_name_clearance_agent(tools=parallel_tools, model=model)
-    brand_agent = create_brand_clearance_agent(tools=parallel_tools, model=model)
-    title_agent = create_title_clearance_agent(tools=parallel_tools, model=model)
+    name_agent = create_name_clearance_agent(tools=parallel_tools, model=chosen_model)
+    brand_agent = create_brand_clearance_agent(tools=parallel_tools, model=chosen_model)
+    title_agent = create_title_clearance_agent(tools=parallel_tools, model=chosen_model)
 
     clearance_team = ParallelAgent(
         name="ParallelClearanceTeam",
@@ -46,7 +45,7 @@ def build_greenlight_pipeline(model: str = "gemini-2.0-flash") -> SequentialAgen
     )
 
     # Stage 3: Risk Synthesis & Underwriting Verdict
-    synthesizer_agent = create_risk_synthesizer_agent(model=model)
+    synthesizer_agent = create_risk_synthesizer_agent(model=chosen_model)
 
     # Composed Root Pipeline
     pipeline = SequentialAgent(

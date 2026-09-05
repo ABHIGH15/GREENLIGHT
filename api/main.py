@@ -47,11 +47,23 @@ async def serve_dashboard():
 @app.get("/health")
 async def health_check():
     """Health check endpoint for Cloud Run & API status."""
-    has_gemini = bool(os.environ.get("GOOGLE_GENAI_API_KEY", "").strip())
+    gemini_key = (
+        os.environ.get("GOOGLE_GENAI_API_KEY", "").strip() or 
+        os.environ.get("GOOGLE_API_KEY", "").strip() or 
+        os.environ.get("GEMINI_API_KEY", "").strip()
+    )
+    has_gemini = bool(gemini_key and not gemini_key.startswith("your_"))
+    if has_gemini:
+        os.environ["GOOGLE_API_KEY"] = gemini_key
+        os.environ["GEMINI_API_KEY"] = gemini_key
+        os.environ["GOOGLE_GENAI_API_KEY"] = gemini_key
+
     has_parallel = bool(os.environ.get("PARALLEL_API_KEY", "").strip())
+    model_name = os.environ.get("GEMINI_MODEL", "gemini-3.5-flash-lite")
     return {
         "status": "healthy",
         "service": "greenlight-clearance-copilot",
+        "active_model": model_name,
         "mcp_target": "https://search-mcp.parallel.ai/mcp",
         "keys_configured": {
             "google_genai_api_key": has_gemini,

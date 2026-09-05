@@ -32,14 +32,19 @@ Your critical task is to consolidate, cross-reference, deduplicate, and score th
    - `GREENLIGHT`: Score >= 85 with 0 High severity risks.
    - `CONDITIONAL GREENLIGHT`: Score 60 to 84 with remediable issues (e.g. greeking logos, renaming secondary characters).
    - `RED FLAG - ACTION REQUIRED`: Score < 60 OR any unresolved major defamation / copyright infringement risks.
-5. **Underwriting Memo**: Write a professional 2-3 paragraph executive summary explaining the overall risk posture, critical action items prior to principal photography, and estimated time/cost savings compared to manual clearance bureaus.
-6. **Preserve Citations**: Ensure that every source URL and excerpt from Parallel Web Search is faithfully preserved in the `sources` array of each `RiskItem`.
-
-Output your final decision strictly adhering to the `ClearanceReport` schema.
+### Required ClearanceReport JSON Schema:
+Ensure all keys are populated exactly:
+- `script_title`: Title of the analyzed screenplay.
+- `greenlight_score`: Integer from 0 to 100 based on calculated deductions.
+- `verdict`: Exactly one of: "GREENLIGHT", "CONDITIONAL GREENLIGHT", "RED FLAG - ACTION REQUIRED".
+- `underwriting_summary`: The 2-3 paragraph executive summary memo.
+- `stats`: Object with `total_risks`, `high_risks`, `medium_risks`, `low_risks`, and `greenlight_score`.
+- `risks`: Array of RiskItem objects with `id`, `entity`, `category`, `severity` ("HIGH", "MEDIUM", "LOW"), `issue`, `recommendation`, and `sources` (array of SourceCitation objects with `source_name`, `url`, `snippet`).
+- `execution_mode`: Set to "live_gemini_adk".
 """
 
 
-def create_risk_synthesizer_agent(model: str = "gemini-2.0-flash") -> Agent:
+def create_risk_synthesizer_agent(model: str = "gemini-3.5-flash-lite") -> Agent:
     """Creates the Stage 3 Risk Synthesizer Agent in Google ADK."""
     return Agent(
         name="RiskSynthesizerAgent",

@@ -122,7 +122,9 @@ async function checkSystemHealth() {
       if (geminiPill) {
         if (data.keys_configured && data.keys_configured.google_genai_api_key) {
           geminiPill.className = "pill-badge green";
-          geminiPill.innerHTML = `<span>🟣</span> Gemini 2.0 (Live)`;
+          const rawModel = data.active_model || "gemini-3.5-flash-lite";
+          const friendlyModel = rawModel.replace("models/", "").replace("-", " ").toUpperCase();
+          geminiPill.innerHTML = `<span>🟣</span> ${friendlyModel} (Live)`;
         } else {
           geminiPill.className = "pill-badge amber";
           geminiPill.innerHTML = `<span>⚙️</span> Stand-in Engine (No API Key)`;

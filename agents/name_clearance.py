@@ -59,7 +59,7 @@ Maintain rigorous legal precision. An unflagged character defamation collision c
 """
 
 
-def create_name_clearance_agent(tools: List[Any], model: str = "gemini-2.0-flash") -> Agent:
+def create_name_clearance_agent(tools: List[Any], model: str = "gemini-3.7-flash") -> Agent:
     """Creates the Stage 2a Name Clearance Agent with Parallel MCP tools and local phonetic tools."""
     # Ensure local phonetic screening tool is registered alongside MCP web search tools
     all_tools = [check_name_phonetic_similarity] + list(tools)

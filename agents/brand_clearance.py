@@ -58,7 +58,7 @@ Clearance counsel requires precise citations and safe, production-friendly alter
 """
 
 
-def create_brand_clearance_agent(tools: List[Any], model: str = "gemini-2.0-flash") -> Agent:
+def create_brand_clearance_agent(tools: List[Any], model: str = "gemini-3.7-flash") -> Agent:
     """Creates the Stage 2b Brand & Trademark Clearance Agent with Parallel MCP tools and greeking tools."""
     # Ensure local greeking generator tool is registered alongside MCP web search tools
     all_tools = [suggest_greeking_alternatives] + list(tools)

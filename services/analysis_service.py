@@ -58,8 +58,17 @@ class AnalysisService:
     async def _run_pipeline(self, analysis_id: str, script_text: str, script_title: Optional[str] = None):
         logger.info(f"Starting clearance pipeline for job {analysis_id}")
         
-        # Check if Google GenAI API key is configured
-        has_gemini_key = bool(os.environ.get("GOOGLE_GENAI_API_KEY", "").strip())
+        # Check if Google GenAI API key is configured and bridge keys for ADK / google-genai
+        gemini_key = (
+            os.environ.get("GOOGLE_GENAI_API_KEY", "").strip() or 
+            os.environ.get("GOOGLE_API_KEY", "").strip() or 
+            os.environ.get("GEMINI_API_KEY", "").strip()
+        )
+        has_gemini_key = bool(gemini_key and not gemini_key.startswith("your_"))
+        if has_gemini_key:
+            os.environ["GOOGLE_API_KEY"] = gemini_key
+            os.environ["GEMINI_API_KEY"] = gemini_key
+            os.environ["GOOGLE_GENAI_API_KEY"] = gemini_key
         
         try:
             # STAGE 1: SCRIPT PARSING
@@ -121,13 +130,17 @@ class AnalysisService:
             report = None
             if has_gemini_key:
                 try:
-                    logger.info(f"[{analysis_id}] GOOGLE_GENAI_API_KEY detected. Initializing live Google ADK multi-agent runner...")
+                    from services.rate_limiter import setup_adk_rate_limiter, DailyQuotaExhaustedError
+                    setup_adk_rate_limiter()
+
+                    configured_model = os.environ.get("GEMINI_MODEL", "gemini-3.5-flash-lite").strip()
+                    logger.info(f"[{analysis_id}] GOOGLE_GENAI_API_KEY detected. Initializing live Google ADK multi-agent runner (model: {configured_model})...")
                     await self.emit_event(PipelineStatusEvent(
                         analysis_id=analysis_id,
                         stage="Live Agent Execution",
                         stage_index=2,
                         total_stages=3,
-                        message="🚀 Running live Google Gemini 2.0 Flash agents with Parallel Search MCP..."
+                        message=f"🚀 Running live Google {configured_model} agents with Parallel Search MCP..."
                     ))
 
                     from agents.pipeline import build_greenlight_pipeline
@@ -135,46 +148,93 @@ class AnalysisService:
                     from google.adk.sessions import InMemorySessionService
                     from google.genai import types
 
-                    pipeline = build_greenlight_pipeline()
-                    session_service = InMemorySessionService()
-                    runner = Runner(agent=pipeline, app_name="greenlight", session_service=session_service)
+                    async def _execute_adk_run(model_to_run: str) -> Optional[ClearanceReport]:
+                        pipeline = build_greenlight_pipeline(model=model_to_run)
+                        session_service = InMemorySessionService()
+                        runner = Runner(agent=pipeline, app_name="greenlight", session_service=session_service)
 
-                    session = await session_service.create_session(
-                        app_name="greenlight",
-                        user_id="producer_clearance",
-                        state={"script_text": script_text, "script_title": script_title or "Untitled Screenplay"}
-                    )
+                        session = await session_service.create_session(
+                            app_name="greenlight",
+                            user_id="producer_clearance",
+                            state={"script_text": script_text, "script_title": script_title or "Untitled Screenplay"}
+                        )
 
-                    content = types.Content(
-                        role="user",
-                        parts=[types.Part(text=f"Analyze this screenplay for pre-production legal clearance and E&O insurance risk:\n\n{script_text}")]
-                    )
+                        content = types.Content(
+                            role="user",
+                            parts=[types.Part(text=f"Analyze this screenplay for pre-production legal clearance and E&O insurance risk:\n\n{script_text}")]
+                        )
 
-                    async for event in runner.run_async(user_id="producer_clearance", session_id=session.id, new_message=content):
-                        if hasattr(event, "content") and event.content:
-                            for part in event.content.parts:
-                                text_chunk = getattr(part, "text", None)
-                                if text_chunk:
-                                    logger.info(f"[{analysis_id}] ADK Event: {text_chunk[:100]}")
+                        logger.info(f"[{analysis_id}] Executing ADK Runner with model {model_to_run}...")
+                        async for event in runner.run_async(user_id="producer_clearance", session_id=session.id, new_message=content):
+                            if hasattr(event, "content") and event.content:
+                                for part in event.content.parts:
+                                    text_chunk = getattr(part, "text", None)
+                                    if text_chunk:
+                                        logger.info(f"[{analysis_id}] ADK Event: {text_chunk[:100]}")
 
-                    updated_session = await session_service.get_session(
-                        app_name="greenlight", user_id="producer_clearance", session_id=session.id
-                    )
-                    live_output = updated_session.state.get("clearance_report")
-                    if live_output:
-                        if isinstance(live_output, ClearanceReport):
-                            report = live_output
-                        elif isinstance(live_output, dict):
-                            report = ClearanceReport(**live_output)
-                        elif isinstance(live_output, str):
-                            try:
-                                report = ClearanceReport.model_validate_json(live_output)
-                            except Exception:
-                                report = ClearanceReport(**json.loads(live_output))
+                        updated_session = await session_service.get_session(
+                            app_name="greenlight", user_id="producer_clearance", session_id=session.id
+                        )
+                        raw_output = updated_session.state.get("clearance_report")
+                        if not raw_output:
+                            return None
 
-                        if report:
-                            report.execution_mode = "live_gemini_adk"
-                            logger.info(f"[{analysis_id}] Live ADK Gemini execution successfully generated ClearanceReport (score={report.greenlight_score})!")
+                        if isinstance(raw_output, ClearanceReport):
+                            rep = raw_output
+                        elif isinstance(raw_output, dict):
+                            # Ensure required fields have valid defaults
+                            if not raw_output.get("analysis_id"):
+                                raw_output["analysis_id"] = analysis_id
+                            if not raw_output.get("script_title"):
+                                raw_output["script_title"] = script_title or "Untitled Screenplay"
+                            if not raw_output.get("execution_mode"):
+                                raw_output["execution_mode"] = "live_gemini_adk"
+                            if not raw_output.get("verdict"):
+                                score = raw_output.get("greenlight_score", 70)
+                                if score >= 85:
+                                    raw_output["verdict"] = "GREENLIGHT"
+                                elif score >= 60:
+                                    raw_output["verdict"] = "CONDITIONAL GREENLIGHT"
+                                else:
+                                    raw_output["verdict"] = "RED FLAG - ACTION REQUIRED"
+                            if not raw_output.get("stats"):
+                                risks_list = raw_output.get("risks", [])
+                                raw_output["stats"] = {
+                                    "total_risks": len(risks_list),
+                                    "high_risks": sum(1 for r in risks_list if (r.get("severity") if isinstance(r, dict) else getattr(r, "severity", "")).upper() == "HIGH"),
+                                    "medium_risks": sum(1 for r in risks_list if (r.get("severity") if isinstance(r, dict) else getattr(r, "severity", "")).upper() == "MEDIUM"),
+                                    "low_risks": sum(1 for r in risks_list if (r.get("severity") if isinstance(r, dict) else getattr(r, "severity", "")).upper() == "LOW"),
+                                    "greenlight_score": raw_output.get("greenlight_score", 70)
+                                }
+                            rep = ClearanceReport(**raw_output)
+                        elif isinstance(raw_output, str):
+                            rep = ClearanceReport.model_validate_json(raw_output)
+                        else:
+                            rep = None
+
+                        if rep:
+                            rep.analysis_id = analysis_id
+                            rep.execution_mode = "live_gemini_adk"
+                        return rep
+
+                    try:
+                        report = await _execute_adk_run(configured_model)
+                    except DailyQuotaExhaustedError as quota_err:
+                        if configured_model != "gemini-3.5-flash-lite":
+                            logger.warning(f"[{analysis_id}] {quota_err}. Falling back to high-capacity gemini-3.5-flash-lite...")
+                            await self.emit_event(PipelineStatusEvent(
+                                analysis_id=analysis_id,
+                                stage="Quota Fallback",
+                                stage_index=2,
+                                total_stages=3,
+                                message=f"⚠️ {configured_model} daily quota limit reached on Free Tier. Routing to Gemini 3.5 Flash Lite..."
+                            ))
+                            report = await _execute_adk_run("gemini-3.5-flash-lite")
+                        else:
+                            raise quota_err
+
+                    if report:
+                        logger.info(f"[{analysis_id}] Live ADK Gemini execution successfully generated ClearanceReport (score={report.greenlight_score})!")
                 except Exception as adk_err:
                     logger.error(f"[{analysis_id}] Live ADK runner error: {adk_err}", exc_info=True)
                     await self.emit_event(PipelineStatusEvent(
