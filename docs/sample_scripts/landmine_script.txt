@@ -24,27 +24,27 @@ SCENE 2 - INT. BIOMEDICAL LAB - CONTINUOUS
 
 Julian kicks open the reinforced security doors. He storms past rows of stainless steel bioreactor pods.
 
-At the central terminal stands DR. GABRIEL STERLING (50s), chief scientific founder turned rogue biotech executive. He is feverishly pipetting glowing blue synthetic peptides into refrigerated cryogenic vials.
+At the central terminal stands DR. VALEN MERCER (50s), chief scientific founder turned rogue biotech executive. He is feverishly pipetting glowing blue synthetic peptides into refrigerated cryogenic vials.
 
 JULIAN
-Gabriel! The patent assignment papers were supposed to be filed with the USPTO yesterday.
+Valen! The patent assignment papers were supposed to be filed with the USPTO yesterday.
 
-GABRIEL
+VALEN
 The FDA sent a preliminary inspection notice this morning, Julian. The Phase II trial cohort in Zurich developed acute toxicity. 
 
 JULIAN
 Then pull the clinical dossiers and seal the archives! If the underwriters at Chubb or Lloyd's get a look at those adverse reaction tables, our Series B bridge loan is dead in the water.
 
-Gabriel grabs a bottle of PERRIER SPARKLING WATER from the lab bench, takes a slow drink, and places the bottle beside an autoclave.
+Valen grabs a bottle of PERRIER SPARKLING WATER from the lab bench, takes a slow drink, and places the bottle beside an autoclave.
 
-GABRIEL
-You think this is about financing? If you want to renegotiate the IP split, call my direct private line at (555) 349-2011. Or come by my private research retreat at 404 Skyline Crest Way, Suite 800. But don't threaten me in my own laboratory.
+VALEN
+You think this is about financing? If you want to renegotiate the IP split, call my direct private line at (415) 789-2341. Or come by my private research retreat at 404 Skyline Crest Way, Suite 800. But don't threaten me in my own laboratory.
 
 JULIAN
 (pulling a GLOCK 19 pistol from his jacket)
-You won't leave this cleanroom alive without those cryptographic master keys, Gabriel.
+You won't leave this cleanroom alive without those cryptographic master keys, Valen.
 
-GABRIEL
+VALEN
 (smirks, tapping his chest)
 Go ahead. My telemetry monitor is tethered to a private cloud instance. The moment my vitals flatline, the raw trial data automatically broadcasts to the SEC, the Wall Street Journal, and federal investigators.
 
