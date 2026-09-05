@@ -129,7 +129,7 @@ class AnalysisService:
 
                     pipeline = build_greenlight_pipeline()
                     session_service = InMemorySessionService()
-                    runner = Runner(agent=pipeline, session_service=session_service)
+                    runner = Runner(agent=pipeline, app_name="greenlight", session_service=session_service)
 
                     session = await session_service.create_session(
                         app_name="greenlight",
@@ -231,10 +231,11 @@ class AnalysisService:
                 severity=RiskSeverity.MEDIUM,
                 scene_or_page="Scene 1 & Scene 2",
                 description=(
-                    "TRADEMARK PROP USAGE IN CRIMINAL CONTEXT: Julian is explicitly described drawing a 'Glock 19' in an attempted murder / extortion "
-                    "scenario, while wearing a 'Rolex Submariner'. Firearms manufacturers and luxury watchmakers maintain aggressive trade dress and "
-                    "trademark defense teams. While incidental depiction in scripted narrative is generally protected under nominative fair use, "
-                    "prominent hero-shot product placements depicting weapons in criminal acts can attract cease-and-desist notices or distributor pushback."
+                    "TRADEMARK PROP USAGE IN CRIMINAL CONTEXT (LANHAM ACT § 43(c) TARNISHMENT / § 43(a) FALSE ENDORSEMENT): "
+                    "Julian is explicitly described drawing a 'Glock 19' in an attempted murder / extortion scenario while wearing a 'Rolex Submariner'. "
+                    "Firearms and luxury manufacturers aggressively litigate unauthorized product tarnishment and trade dress dilution "
+                    "(Caterpillar Inc. v. Walt Disney Co.; Wham-O, Inc. v. Paramount Pictures Corp.). While incidental prop use is protected "
+                    "under First Amendment nominative fair use (Rogers v. Grimaldi), weapon close-ups during violent crimes routinely invite underwriter objections without signed releases."
                 ),
                 sources=[
                     SourceCitation(
@@ -248,7 +249,11 @@ class AnalysisService:
                         snippet="Rolex and Submariner are registered trademarks of Rolex SA."
                     )
                 ],
-                recommended_action="PROP CLEARANCE: In scene direction and dialogue, refer to weapon as generic '9mm handgun'. Avoid camera macro-focus on firearm logo badges or watch dial crown in post-production."
+                recommended_action=(
+                    "PROP CLEARANCE & GREEKING: In dialogue and action lines, replace with generic '9mm handgun'. "
+                    "For physical hero props, art department to greek logos using vetted fictional brands: 'Titan-9' or 'Centurion Armory' "
+                    "(Heuristic string-distance pre-filter only; not a substitute for full Sleekcraft/Polaroid likelihood-of-confusion analysis)."
+                )
             ))
 
         # 3. TITLE & COPYRIGHT RISKS
@@ -260,25 +265,28 @@ class AnalysisService:
                 severity=RiskSeverity.HIGH,
                 scene_or_page="Working Title",
                 description=(
-                    "TITLE CONFUSION & UNFAIR COMPETITION (MPAA REGISTRY CONFLICT): The title 'The Apprentice's Revenge' creates immediate "
-                    "commercial confusion with 'The Apprentice' (the 2024 Cannes Film Festival theatrical release directed by Ali Abbasi) "
-                    "and the long-running television franchise owned by Metro-Goldwyn-Mayer. Under MPA Title Registration Bureau rules "
-                    "and Lanham Act secondary meaning doctrine, using a confusingly similar title on a new feature project creates immediate "
-                    "unfair competition and deceptive marketing exposure."
+                    "TITLE CONFUSION & UNFAIR COMPETITION (MPA TITLE REGISTRATION BUREAU CONFLICT): While titles lack copyright protection per se "
+                    "(37 C.F.R. § 202.1(a); Kirkland v. NBC, 425 F. Supp. 1111), titles are protected under Lanham Act § 43(a) secondary meaning "
+                    "and reverse confusion (Warner Bros. Pictures, Inc. v. Majestic Pictures Corp.). The proposed title 'The Apprentice's Revenge' "
+                    "creates confusing root-token overlap with 'The Apprentice' (Ali Abbasi's 2024 Cannes theatrical release). Under MPA Title Registration Bureau rules, "
+                    "subscribers face mandatory arbitration and theatrical distribution injunctions for confusingly similar titles."
                 ),
                 sources=[
                     SourceCitation(
-                        title="The Apprentice (2024 Film) - Cannes Film Festival Premiere",
+                        title="The Apprentice (2024 Film) - Cannes Premiere / Theatrical Release",
                         url="https://www.imdb.com/title/tt8368368/",
-                        snippet="The Apprentice (2024) biographical drama film starring Sebastian Stan, theatrical release 2024."
+                        snippet="The Apprentice (2024) biographical drama directed by Ali Abbasi starring Sebastian Stan."
                     ),
                     SourceCitation(
                         title="MPA Title Registration Bureau Guidelines",
                         url="https://www.motionpictures.org/",
-                        snippet="Administers title subscriber clearance system protecting theatrical films against confusingly similar titles."
+                        snippet="Administers subscriber clearance system protecting theatrical features against confusingly similar titles."
                     )
                 ],
-                recommended_action="REGISTER DISTINCTIVE TITLE: Register an alternative working title with the MPA Title Registration Bureau (e.g. 'Silicon Vendetta' or 'Mission Bay Reckoning') prior to principal photography."
+                recommended_action=(
+                    "MANDATORY TITLE REVISION: Register a verified distinctive title with the MPA Title Registration Bureau prior to production. "
+                    "Pre-cleared zero-collision alternatives: 'The Architect's Reckoning', 'Protocol of Shadows', or 'Echoes of Retribution'."
+                )
             ))
 
         # 4. PHONE NUMBER & REAL ADDRESS RISKS

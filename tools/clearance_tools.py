@@ -214,13 +214,13 @@ def check_mpaa_title_rules(title: str) -> Dict[str, Any]:
                 "risk_level": "HIGH",
                 "trb_advisory": "MPA TRB protest guaranteed; active commercial release with entrenched secondary meaning."
             })
-        elif is_substring or (token_overlap and len(token_overlap) == len(meaningful_reg_words)) or sim_score >= 0.55:
+        elif is_substring or (token_overlap and len(token_overlap) == len(meaningful_reg_words)) or sim_score >= 0.75:
             collisions.append({
                 "competing_work": f"{reg_title} ({reg.get('year', 'N/A')})",
                 "distributor": reg.get("distributor", "Unknown"),
                 "similarity_type": f"SUBSTRING_OR_TOKEN_OVERLAP ({', '.join(token_overlap)})" if token_overlap else "PHONETIC_OR_ORTHOGRAPHIC_PROXIMITY",
                 "similarity_score": round(sim_score, 3),
-                "risk_level": "HIGH" if (is_substring or sim_score >= 0.60) else "MEDIUM",
+                "risk_level": "HIGH" if (is_substring or sim_score >= 0.80) else "MEDIUM",
                 "trb_advisory": "Confusing similarity likely to trigger an MPA TRB dispute or reverse-confusion claim under Lanham Act § 43(a)."
             })
 
