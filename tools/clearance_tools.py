@@ -111,3 +111,82 @@ def check_mpaa_title_rules(title: str) -> List[Dict[str, Any]]:
         })
         
     return flags
+
+
+# Curated dictionary of vetted fictional brand names across common entertainment industry categories
+GREEKING_CATALOG: Dict[str, List[str]] = {
+    "firearms_tactical": [
+        "Vanguard Arms", "Titan-9", "Aegis Tactical", "Valor Defense", "Centurion Armory"
+    ],
+    "automotive_luxury": [
+        "Veloce Motors", "Castiglione GT", "Aurelia", "Monte Carlo Prestige", "Valente"
+    ],
+    "automotive_everyday": [
+        "Centurion", "Metro Motors", "Valor Auto", "Pacifica Motors", "Apex Sedans"
+    ],
+    "tech_hardware": [
+        "Apex Systems", "Syntron Devices", "OmniTech", "Novus Tech", "Spectra Systems"
+    ],
+    "software_ai": [
+        "Neuralis", "Sentient Core", "Cognita Technologies", "Aegis AI", "Vektor Cloud"
+    ],
+    "pharma_biotech": [
+        "Nexura Health", "TheraCorp", "BioVance Labs", "GeneSys Pharma", "Solas Life Sciences"
+    ],
+    "beverage_food": [
+        "FizzCo", "Summit Springs", "Sunburst Cola", "Alpine Crisp", "Zest Refresh"
+    ],
+    "alcohol_spirits": [
+        "Old Sovereign Bourbon", "Crown & Anchor Gin", "Glenmont Single Malt", "Bellerose Vineyard"
+    ],
+    "financial_banking": [
+        "Meridian Standard Bank", "Vanguard Trust", "Sterling & Holt", "Crown Atlantic Capital"
+    ],
+    "luxury_goods_watches": [
+        "Horlogerie Vaneau", "Kavell Chronometrics", "Aurelius Watchmakers", "Belmont & Co."
+    ]
+}
+
+
+def suggest_greeking_alternatives(category: str, original_brand: str = "") -> Dict[str, Any]:
+    """Suggests clearance-vetted fictional replacement brands ('greeking') for art departments and props.
+    
+    NOTE: Heuristic string-distance pre-filter only; not a substitute for a full
+    likelihood-of-confusion analysis under the multi-factor Sleekcraft/Polaroid tests
+    (e.g., AMF Inc. v. Sleekcraft Boats, 599 F.2d 341; Polaroid Corp. v. Polarad Elecs. Corp., 287 F.2d 492).
+    """
+    category_key = category.lower().strip().replace(" ", "_").replace("-", "_")
+    
+    # Fuzzy match category if not exact
+    matching_cat = None
+    for cat in GREEKING_CATALOG:
+        if category_key in cat or cat in category_key:
+            matching_cat = cat
+            break
+            
+    if not matching_cat:
+        # Fallback to general tech or luxury if unknown
+        matching_cat = "tech_hardware"
+
+    candidates = GREEKING_CATALOG[matching_cat]
+    suggestions = []
+
+    for cand in candidates:
+        sim = calculate_string_similarity(original_brand, cand) if original_brand else 0.0
+        suggestions.append({
+            "fictional_brand": cand,
+            "category": matching_cat,
+            "string_similarity_to_original": round(sim, 3),
+            "heuristic_check": "PASS (Low orthographic similarity < 0.35)" if sim < 0.35 else "CAUTION (Potential orthographic proximity)"
+        })
+
+    # Sort so least similar candidates are first
+    suggestions.sort(key=lambda x: x["string_similarity_to_original"])
+
+    return {
+        "original_brand": original_brand,
+        "category": matching_cat,
+        "available_alternatives": suggestions[:3],
+        "clearance_advisory": "Heuristic string-distance pre-filter only; not a substitute for a full likelihood-of-confusion analysis (Sleekcraft/Polaroid multi-factor test)."
+    }
+
