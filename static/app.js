@@ -264,10 +264,18 @@ async function fetchAndRenderReport(analysisId) {
     // Populate Report Fields
     document.getElementById("reportScriptTitle").textContent = report.script_title;
     const isLive = report.execution_mode === "live_gemini_adk";
-    const modeHtml = isLive
-      ? `<span class="pill-badge green" style="display:inline-flex; font-size:0.75rem; padding: 0.2rem 0.6rem;">🚀 Live Gemini 2.0 + Parallel Search MCP</span>`
-      : `<span class="pill-badge amber" style="display:inline-flex; font-size:0.75rem; padding: 0.2rem 0.6rem;">⚙️ Deterministic Stand-in Engine</span>`;
-    document.getElementById("reportMeta").innerHTML = `Analysis ID: ${report.analysis_id} | Date: ${new Date(report.generated_at).toLocaleString()} | ${modeHtml}`;
+    const execBadge = document.getElementById("reportExecutionBadge");
+    const execText = document.getElementById("reportExecutionText");
+    if (execBadge && execText) {
+      if (isLive) {
+        execBadge.className = "execution-mode-badge live";
+        execText.innerHTML = `⚡ Verified Live Google ADK Execution (Parallel MCP Grounded)`;
+      } else {
+        execBadge.className = "execution-mode-badge fallback";
+        execText.innerHTML = `⚙️ Deterministic Clearance Engine (Stand-in Mode)`;
+      }
+    }
+    document.getElementById("reportMeta").innerHTML = `Analysis ID: ${report.analysis_id} | Completed: ${new Date(report.generated_at).toLocaleString()}`;
     
     // Score & Gauge
     const scoreVal = document.getElementById("scoreVal");

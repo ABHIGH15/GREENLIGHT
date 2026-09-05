@@ -105,11 +105,17 @@
     <section id="reportSection" class="glass-panel" style="display: none;">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
         <div>
-          <div style="font-size: 0.75rem; font-weight: 700; color: var(--color-cyan); text-transform: uppercase;">
-            E&O Clearance Dossier
+          <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+            <div style="font-size: 0.75rem; font-weight: 700; color: var(--color-cyan); text-transform: uppercase;">
+              E&O Clearance Dossier
+            </div>
+            <div id="reportExecutionBadge" class="execution-mode-badge live">
+              <span class="pulse-dot"></span>
+              <span id="reportExecutionText">⚡ Live Google ADK Multi-Agent Execution</span>
+            </div>
           </div>
-          <h2 id="reportScriptTitle" style="font-size: 1.85rem; font-weight: 800;">Screenplay Title</h2>
-          <div id="reportMeta" style="font-size: 0.8rem; color: var(--text-dim);">Generated via GREENLIGHT</div>
+          <h2 id="reportScriptTitle" style="font-size: 1.85rem; font-weight: 800; margin-top: 0.35rem;">Screenplay Title</h2>
+          <div id="reportMeta" style="font-size: 0.8rem; color: var(--text-dim); margin-top: 0.2rem;">Generated via GREENLIGHT</div>
         </div>
         <div style="display: flex; gap: 0.75rem;">
           <button id="exportPdfBtn" class="btn-secondary">
