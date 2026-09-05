@@ -6,6 +6,7 @@ from tools.clearance_tools import (
     check_name_phonetic_similarity,
     suggest_greeking_alternatives,
     check_mpaa_title_rules,
+    check_nanpa_phone_number,
     GREEKING_CATALOG
 )
 from agents.pipeline import build_greenlight_pipeline
@@ -71,6 +72,27 @@ class TestClearanceTools(unittest.TestCase):
         self.assertEqual(res["overall_risk"], "MEDIUM")
         self.assertTrue(any("generic single-word" in f["issue"] for f in res["flags"]))
 
+    def test_check_nanpa_phone_number(self):
+        # 1. Non-reserved 555 number outside 0100-0199 block
+        unauthorized = check_nanpa_phone_number("(415) 555-0250")
+        self.assertEqual(unauthorized["status"], "UNAUTHORIZED_555_NUMBER")
+        self.assertEqual(unauthorized["severity"], "HIGH")
+        self.assertFalse(unauthorized["is_cleared"])
+        self.assertIn("OUTSIDE the reserved NANPA/FCC fictional sub-block", unauthorized["issue"])
+        self.assertIn("555-0142", unauthorized["recommended_action"])
+
+        # 2. Cleared fictional entertainment block (0100-0199)
+        cleared = check_nanpa_phone_number("(212) 555-0142")
+        self.assertEqual(cleared["status"], "CLEARED_FICTIONAL_BLOCK")
+        self.assertEqual(cleared["severity"], "LOW")
+        self.assertTrue(cleared["is_cleared"])
+
+        # 3. Real non-555 phone number
+        real_num = check_nanpa_phone_number("(415) 867-5309")
+        self.assertEqual(real_num["status"], "NON_555_REAL_NUMBER_RISK")
+        self.assertEqual(real_num["severity"], "HIGH")
+        self.assertFalse(real_num["is_cleared"])
+
 
 class TestPipelineArchitecture(unittest.TestCase):
     """Verifies ADK agent topology, output keys, and tool registrations."""
@@ -97,6 +119,7 @@ class TestPipelineArchitecture(unittest.TestCase):
         self.assertEqual(brand_agent.name, "BrandClearanceAgent")
         self.assertEqual(brand_agent.output_key, "brand_risks")
         self.assertTrue(any(callable(t) and t.__name__ == "suggest_greeking_alternatives" for t in brand_agent.tools))
+        self.assertTrue(any(callable(t) and t.__name__ == "check_nanpa_phone_number" for t in brand_agent.tools))
 
         self.assertEqual(title_agent.name, "TitleClearanceAgent")
         self.assertEqual(title_agent.output_key, "title_risks")

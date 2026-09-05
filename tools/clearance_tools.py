@@ -351,3 +351,56 @@ def suggest_greeking_alternatives(category: str, original_brand: str = "") -> Di
         "clearance_advisory": "Heuristic string-distance pre-filter only; not a substitute for a full likelihood-of-confusion analysis (Sleekcraft/Polaroid multi-factor test)."
     }
 
+
+def check_nanpa_phone_number(phone_number: str) -> Dict[str, Any]:
+    """Evaluates a telephone number against North American Numbering Plan Administration (NANPA)
+    and FCC entertainment fictional reservation standards.
+    
+    Under NANPA and industry standards, ONLY the 100-number sub-block (NPA) 555-0100 through (NPA) 555-0199
+    is reserved exclusively for fictional entertainment use in television and film.
+    Numbers outside this range (e.g. 555-0250, 555-1234) were assigned for directory assistance or
+    routing services, creating nuisance / subscriber privacy liabilities for E&O underwriters.
+    """
+    import re
+    if not phone_number:
+        return {"error": "Phone number must be provided"}
+
+    cleaned = re.sub(r"[^\d]", "", str(phone_number))
+    match = re.search(r"555(\d{4})", cleaned)
+    if not match:
+        return {
+            "phone_number": phone_number,
+            "status": "NON_555_REAL_NUMBER_RISK",
+            "severity": "HIGH",
+            "is_cleared": False,
+            "issue": f"Phone number '{phone_number}' does not use a 555 exchange and may be an active residential or commercial subscriber line.",
+            "recommended_action": "Replace with an authorized NANPA fictional entertainment number: (415) 555-0142 or (415) 555-0199."
+        }
+
+    line_digits = int(match.group(1))
+    if 100 <= line_digits <= 199:
+        return {
+            "phone_number": phone_number,
+            "status": "CLEARED_FICTIONAL_BLOCK",
+            "severity": "LOW",
+            "is_cleared": True,
+            "line_number": f"555-{line_digits:04d}",
+            "issue": f"Phone number '{phone_number}' falls within the authorized NANPA fictional sub-block (555-0100 through 555-0199). Cleared for screen use.",
+            "recommended_action": "CLEARED FOR UNDERWRITING: No dialogue revision required."
+        }
+    else:
+        return {
+            "phone_number": phone_number,
+            "status": "UNAUTHORIZED_555_NUMBER",
+            "severity": "HIGH",
+            "is_cleared": False,
+            "line_number": f"555-{line_digits:04d}",
+            "issue": (
+                f"Phone number '{phone_number}' uses central office code 555 with line number {line_digits:04d}, "
+                "which is OUTSIDE the reserved NANPA/FCC fictional sub-block (555-0100 through 555-0199). "
+                "Numbers outside 0100-0199 are allocated for routing/directory assistance and invite E&O underwriter rejections."
+            ),
+            "recommended_action": "MANDATORY DIALOGUE EDIT: Reassign to an authorized NANPA fictional exchange: (415) 555-0142 or (415) 555-0199."
+        }
+
+
