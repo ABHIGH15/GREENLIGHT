@@ -282,20 +282,20 @@ class AnalysisService:
             ))
 
         # 4. PHONE NUMBER & REAL ADDRESS RISKS
-        if "415" in script_text or "789-2341" in script_text:
+        if "555-0250" in script_text or "0250" in script_text:
             risks.append(RiskItem(
                 id="RISK-PROP-01",
-                entity="Spoken Phone Number (415) 789-2341",
+                entity="Spoken Phone Number (415) 555-0250",
                 category=RiskCategory.PROP_OTHER,
                 severity=RiskSeverity.HIGH,
                 scene_or_page="Scene 2 (Dialogue)",
                 description=(
-                    "ACTIVE GEOGRAPHIC TELEPHONE NUMBER EXPOSURE: The character speaks phone number '(415) 789-2341'. "
-                    "While (415) is the authentic geographic area code for San Francisco, the exchange '789' is an active commercial routing exchange. "
-                    "Under North American Numbering Plan Administration (NANPA) and FCC entertainment standards, spoken and displayed telephone numbers "
-                    "in film/television must strictly use the designated fictional 555 exchange block: (NPA) 555-0100 through (NPA) 555-0199 (e.g. '(415) 555-0142'). "
-                    "Broadcasting a standard assignable 7-digit number in the (415) area code creates immediate tort liability, negligent infliction of emotional distress, "
-                    "and nuisance claims from real subscribers receiving unsolicited calls from film audiences."
+                    "NON-CLEARED 555 TELEPHONE NUMBER (OUTSIDE RESERVED 0100–0199 FICTIONAL BLOCK): The character speaks phone number "
+                    "'(415) 555-0250'. A common pre-production misconception is that any 555 number is cleared for screen use. In reality, "
+                    "North American Numbering Plan Administration (NANPA) and FCC entertainment standards strictly reserve ONLY the 100-number "
+                    "sub-block: (NPA) 555-0100 through (NPA) 555-0199. Numbers outside this specific sub-block (such as 555-0250) were allocated "
+                    "for directory assistance, routing, and inter-carrier services. E&O insurance underwriters routinely reject clearance "
+                    "for non-01XX numbers due to potential carrier nuisance claims."
                 ),
                 sources=[
                     SourceCitation(
