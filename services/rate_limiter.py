@@ -18,8 +18,8 @@ _patched = False
 _request_lock = asyncio.Lock()
 _last_request_time = 0.0
 
-def setup_adk_rate_limiter(default_min_interval: float = 12.5, default_max_retries: int = 5):
-    """Monkey-patches google.adk.models.google_llm.Gemini to add proactive pacing,
+def setup_adk_rate_limiter(default_min_interval: float = 4.2, default_max_retries: int = 5):
+    """Monkey-patches google.adk.models.google_llm.Gemini to add proactive pacing (4.2s for 15 RPM models),
     429/503 backoff retries, and quota exhaustion detection.
     """
     global _patched

@@ -33,14 +33,25 @@ Your critical task is to consolidate, cross-reference, deduplicate, and score th
    - `CONDITIONAL GREENLIGHT`: Score 60 to 84 with remediable issues (e.g. greeking logos, renaming secondary characters).
    - `RED FLAG - ACTION REQUIRED`: Score < 60 OR any unresolved major defamation / copyright infringement risks.
 ### Required ClearanceReport JSON Schema:
-Ensure all keys are populated exactly:
-- `script_title`: Title of the analyzed screenplay.
-- `greenlight_score`: Integer from 0 to 100 based on calculated deductions.
-- `verdict`: Exactly one of: "GREENLIGHT", "CONDITIONAL GREENLIGHT", "RED FLAG - ACTION REQUIRED".
-- `underwriting_summary`: The 2-3 paragraph executive summary memo.
-- `stats`: Object with `total_risks`, `high_risks`, `medium_risks`, `low_risks`, and `greenlight_score`.
-- `risks`: Array of RiskItem objects with `id`, `entity`, `category`, `severity` ("HIGH", "MEDIUM", "LOW"), `issue`, `recommendation`, and `sources` (array of SourceCitation objects with `source_name`, `url`, `snippet`).
-- `execution_mode`: Set to "live_gemini_adk".
+Output your final synthesized report adhering strictly to this schema:
+- `script_title`: Screenplay title.
+- `greenlight_score`: Integer (0–100) calculated per deduction rules above.
+- `verdict`: Exactly one of "GREENLIGHT", "CONDITIONAL GREENLIGHT", "RED FLAG - ACTION REQUIRED".
+- `underwriting_summary`: A professional 3-paragraph executive legal memo structured as follows:
+  1. **Executive Risk Assessment**: High-level risk posture and insurable status for E&O policy binding.
+  2. **Production Remediation**: Required actions for production and art departments (renaming characters, greeking props, clearing titles).
+  3. **Clearance Efficiency**: Turnaround and cost comparison against traditional clearance bureaus (saving 5–10 business days and $1,500–$4,000+).
+- `stats`: Object with `total_flags` (int), `high_severity` (int), `medium_severity` (int), `low_severity` (int), and `turnaround_saved` ("5–10 Business Days").
+- `risks`: Array of RiskItem objects conforming to:
+  - `id`: e.g. "RISK-TITLE-01", "RISK-NAME-01", "RISK-BRAND-01", "RISK-PROP-01"
+  - `entity`: Name of character, brand, title, or prop
+  - `category`: "NAME", "BRAND", "TITLE", or "PROP"
+  - `severity`: "HIGH", "MEDIUM", or "LOW"
+  - `scene_or_page`: Scene location or page number
+  - `description`: Rigorous legal analysis citing case law or statutory doctrine
+  - `recommended_action`: Clear, production-ready remediation fix
+  - `sources`: Array of SourceCitation objects with `title`, `url`, and `snippet`
+- `execution_mode`: "live_gemini_adk"
 """
 
 

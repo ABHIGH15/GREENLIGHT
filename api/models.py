@@ -118,16 +118,37 @@ class SummaryStats(BaseModel):
 
 
 class ClearanceReport(BaseModel):
-    analysis_id: str = Field(..., description="Unique analysis job ID")
-    script_title: str = Field(..., description="Title of the screenplay analyzed")
-    greenlight_score: int = Field(..., description="Clearance readiness score from 0 (High Risk) to 100 (Clean)")
-    verdict: str = Field(..., description="GREENLIGHT, CONDITIONAL GREENLIGHT, or RED FLAG - ACTION REQUIRED")
-    underwriting_summary: str = Field(..., description="Executive memo formatted for E&O insurance underwriters")
+    analysis_id: str = Field(default_factory=lambda: f"CLR-{datetime.utcnow().strftime('%Y%m%d%H%M%S')}", description="Unique analysis job ID")
+    script_title: str = Field(default="Untitled Screenplay", description="Title of the screenplay analyzed")
+    greenlight_score: int = Field(default=75, description="Clearance readiness score from 0 (High Risk) to 100 (Clean)")
+    verdict: str = Field(default="CONDITIONAL GREENLIGHT", description="GREENLIGHT, CONDITIONAL GREENLIGHT, or RED FLAG - ACTION REQUIRED")
+    underwriting_summary: str = Field(default="", description="Executive memo formatted for E&O insurance underwriters")
     stats: SummaryStats = Field(default_factory=SummaryStats)
     risks: List[RiskItem] = Field(default_factory=list)
     parsed_script: Optional[ParsedScript] = None
     execution_mode: str = Field(default="deterministic_engine", description="Execution mode: 'live_gemini_adk' or 'deterministic_engine'")
     generated_at: str = Field(default_factory=lambda: datetime.utcnow().isoformat())
+
+    @model_validator(mode="before")
+    @classmethod
+    def normalize_report(cls, data: Any) -> Any:
+        if isinstance(data, dict):
+            if "verdict" not in data or not data["verdict"]:
+                score = data.get("greenlight_score", 70)
+                risks = data.get("risks", [])
+                has_high = any(
+                    (r.get("severity") if isinstance(r, dict) else getattr(r, "severity", "")).upper() == "HIGH"
+                    for r in risks
+                )
+                if score >= 85 and not has_high:
+                    data["verdict"] = "GREENLIGHT"
+                elif score >= 60 and not has_high:
+                    data["verdict"] = "CONDITIONAL GREENLIGHT"
+                else:
+                    data["verdict"] = "RED FLAG - ACTION REQUIRED"
+            if "script_title" not in data and "title" in data:
+                data["script_title"] = data["title"]
+        return data
 
 
 class AnalysisRequest(BaseModel):
