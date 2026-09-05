@@ -1,0 +1,38 @@
+# Git & VCS
+.git/
+.gitignore
+
+# Environment & Secrets (NEVER bundle into image)
+.env
+*.env
+.env.*
+
+# Python caches & artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+
+# Virtual Environments
+.venv/
+venv/
+ENV/
+env/
+
+# IDE & OS
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Testing & Scratch
+.pytest_cache/
+*.log
+uploads/
+scratch/
+tests/__pycache__/

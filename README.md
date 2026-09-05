@@ -14,12 +14,12 @@
 Before any commercial feature film, television pilot, or streaming series can secure **Errors & Omissions (E&O) insurance**—a mandatory legal prerequisite for theatrical release, financing drawdowns, and distributor delivery—production counsel must commission an exhaustive **Script Clearance Report**.
 
 In traditional film financing:
-- Manual clearance bureaus (e.g., Entertainment Clearances Inc., Marshall/Plumb, IndieClear) charge **\$1,500–\$4,000+** per screenplay (with comprehensive title searches adding \$600–\$1,200).
+- Manual clearance bureaus (e.g., Entertainment Clearances Inc., Marshall/Plumb, IndieClear) require specialized legal retainers and labor-intensive line-by-line vetting.
 - Turnaround takes **5–10 business days** (or 3–5 days with steep rush fees).
 - Once clearance is submitted, **insurance underwriting requires another 3–5+ business days** before policy binding.
 - Any unresolved red flag (defamation of a living person, trademark disparagement, title collision) **halts production financing and freezes shooting dates**.
 
-**GREENLIGHT** transforms this costly, multi-day bottleneck into a **source-cited, prioritized legal clearance dossier in minutes**.
+**GREENLIGHT** transforms this multi-day bottleneck into a **source-cited, prioritized legal clearance dossier in minutes**.
 
 ---
 

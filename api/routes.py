@@ -30,6 +30,12 @@ async def get_sample_script():
     }
 
 
+MAX_FILE_SIZE = 10 * 1024 * 1024  # 10 MB
+MAX_TEXT_LENGTH = 350_000  # ~50,000 words / ~120 screenplay pages
+MIN_TEXT_LENGTH = 20
+ALLOWED_EXTENSIONS = {".pdf", ".txt", ".fountain", ".fdx"}
+
+
 @router.post("/analyze")
 async def analyze_script(
     request: Request,
@@ -52,11 +58,33 @@ async def analyze_script(
             pass
 
     if not text_to_analyze and file:
+        filename = file.filename or "uploaded_script"
+        ext = os.path.splitext(filename)[1].lower()
+        if ext and ext not in ALLOWED_EXTENSIONS:
+            allowed_list = ", ".join(sorted(ALLOWED_EXTENSIONS))
+            raise HTTPException(
+                status_code=400,
+                detail=f"Unsupported file format '{ext}'. Supported screenplay formats are: {allowed_list}."
+            )
+
         file_bytes = await file.read()
-        if file.filename and file.filename.lower().endswith(".pdf"):
-            text_to_analyze = extract_text_from_pdf(file_bytes)
+        if len(file_bytes) > MAX_FILE_SIZE:
+            raise HTTPException(
+                status_code=400,
+                detail=f"Uploaded file exceeds the maximum limit of {MAX_FILE_SIZE // (1024 * 1024)}MB."
+            )
+
+        if ext == ".pdf":
+            extracted = extract_text_from_pdf(file_bytes)
+            if not extracted or len(extracted.strip()) < MIN_TEXT_LENGTH:
+                raise HTTPException(
+                    status_code=400,
+                    detail="Could not extract readable screenplay text from the uploaded PDF. The file may be empty, corrupted, image-based/scanned, or password-protected."
+                )
+            text_to_analyze = extracted
         else:
             text_to_analyze = file_bytes.decode("utf-8", errors="ignore")
+
         if not title_to_analyze and file.filename:
             title_to_analyze = file.filename.rsplit(".", 1)[0].replace("_", " ").title()
 
@@ -65,8 +93,17 @@ async def analyze_script(
 
     text_to_analyze = clean_screenplay_text(text_to_analyze)
 
-    if not text_to_analyze or len(text_to_analyze.strip()) < 20:
-        raise HTTPException(status_code=400, detail="Screenplay content must contain at least 20 characters.")
+    if not text_to_analyze or len(text_to_analyze.strip()) < MIN_TEXT_LENGTH:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Screenplay content must contain at least {MIN_TEXT_LENGTH} characters of readable text."
+        )
+
+    if len(text_to_analyze) > MAX_TEXT_LENGTH:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Screenplay text exceeds the maximum supported length of {MAX_TEXT_LENGTH:,} characters (~120 pages)."
+        )
 
     analysis_id = await analysis_service.start_analysis(text_to_analyze, title_to_analyze)
     return {"analysis_id": analysis_id, "status": "started"}
