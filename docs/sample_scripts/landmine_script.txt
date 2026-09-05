@@ -1,0 +1,56 @@
+TITLE: THE APPRENTICE'S REVENGE
+
+WRITTEN BY: ANONYMOUS PRODUCER
+
+LOGLINE: A disgraced Silicon Valley biotech executive launches a covert corporate sabotage campaign against former rivals, using autonomous drone swarms to blackmail Fortune 500 board members in San Francisco.
+
+========================================================================
+
+SCENE 1 - EXT. MISSION BAY TECH CAMPUS - DAY
+
+A gleaming chrome and glass skyscraper looms over the San Francisco waterfront. A massive banner reads: "NEURALINK HEADQUARTERS - BIOMEDICAL DIVISION".
+
+A sleek matte-black TESLA CYBERTRUCK pulls aggressively into the VIP drop-off lane. The vehicle's autonomous autopilot suddenly GLITCHES violently, accelerating into the revolving glass doors. 
+
+Glass SHATTERS everywhere. Pedestrians SCREAM.
+
+The driver side door flies open. Out steps JULIAN VANCE (40s), razor-sharp bespoke suit, Rolex Submariner on his wrist, blood dripping from his knuckles.
+
+JULIAN
+(muttering to his smartwatch)
+Tell me the Cybertruck's steering column didn't lock up again. That's three battery fires in two weeks. Elon's engineers couldn't code their way out of a paper bag.
+
+SCENE 2 - INT. BIOMEDICAL LAB - CONTINUOUS
+
+Julian kicks open the heavy security doors. He storms past rows of stainless steel centrifuge pods.
+
+At the central terminal stands DR. TRAVIS KALANICK (50s), former ride-share tycoon turned rogue venture capitalist. He is feverishly injecting glowing blue synthetic serum into refrigerated vials.
+
+JULIAN
+Travis! You promised me the patent transfers were signed.
+
+TRAVIS
+The FDA caught wind of the toxicity trials, Julian. The three patients in Zurich didn't survive the night. 
+
+JULIAN
+Then bury the lab reports like we did at Theranos! If the underwriters at Chubb and Lloyd's get a look at these toxicology numbers, our Series B is dead before Friday.
+
+Travis grabs a bottle of PERRIER SPARKLING WATER from the lab bench, gulps it down, and tosses the empty glass bottle into a biohazard incinerator.
+
+TRAVIS
+You think this is about money? Call my personal line if you want to negotiate. Dial (415) 789-2341 directly. Or come by my private residence at 2840 Broadway in Pacific Heights. But don't threaten me.
+
+JULIAN
+(pulling a GLOCK 19 pistol from his jacket)
+You won't leave this cleanroom alive without those encryption keys, Travis.
+
+TRAVIS
+(smirks, tapping his chest)
+Go ahead. My cardiac implant is tethered to a private AWS cloud server. The moment my pulse drops below forty, every email in our database forwards to the Wall Street Journal and the FBI field office.
+
+JULIAN
+You bluffing bastard.
+
+Julian raises the Glock. 
+
+FADE TO BLACK.
