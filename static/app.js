@@ -108,7 +108,31 @@ document.addEventListener("DOMContentLoaded", () => {
       renderRiskCards();
     });
   });
+
+  // Verify backend system health and live API key status
+  checkSystemHealth();
 });
+
+async function checkSystemHealth() {
+  try {
+    const res = await fetch("/health");
+    if (res.ok) {
+      const data = await res.json();
+      const geminiPill = document.getElementById("geminiPill");
+      if (geminiPill) {
+        if (data.keys_configured && data.keys_configured.google_genai_api_key) {
+          geminiPill.className = "pill-badge green";
+          geminiPill.innerHTML = `<span>🟣</span> Gemini 2.0 (Live)`;
+        } else {
+          geminiPill.className = "pill-badge amber";
+          geminiPill.innerHTML = `<span>⚙️</span> Stand-in Engine (No API Key)`;
+        }
+      }
+    }
+  } catch (e) {
+    console.warn("Health check error:", e);
+  }
+}
 
 async function startClearanceAudit(text, file) {
   const uploadSec = document.getElementById("uploadSection");
@@ -237,7 +261,11 @@ async function fetchAndRenderReport(analysisId) {
 
     // Populate Report Fields
     document.getElementById("reportScriptTitle").textContent = report.script_title;
-    document.getElementById("reportMeta").textContent = `Analysis ID: ${report.analysis_id} | Date: ${new Date(report.generated_at).toLocaleString()}`;
+    const isLive = report.execution_mode === "live_gemini_adk";
+    const modeHtml = isLive
+      ? `<span class="pill-badge green" style="display:inline-flex; font-size:0.75rem; padding: 0.2rem 0.6rem;">🚀 Live Gemini 2.0 + Parallel Search MCP</span>`
+      : `<span class="pill-badge amber" style="display:inline-flex; font-size:0.75rem; padding: 0.2rem 0.6rem;">⚙️ Deterministic Stand-in Engine</span>`;
+    document.getElementById("reportMeta").innerHTML = `Analysis ID: ${report.analysis_id} | Date: ${new Date(report.generated_at).toLocaleString()} | ${modeHtml}`;
     
     // Score & Gauge
     const scoreVal = document.getElementById("scoreVal");

@@ -82,6 +82,7 @@ class ClearanceReport(BaseModel):
     stats: SummaryStats = Field(default_factory=SummaryStats)
     risks: List[RiskItem] = Field(default_factory=list)
     parsed_script: Optional[ParsedScript] = None
+    execution_mode: str = Field(default="deterministic_engine", description="Execution mode: 'live_gemini_adk' or 'deterministic_engine'")
     generated_at: str = Field(default_factory=lambda: datetime.utcnow().isoformat())
 
 

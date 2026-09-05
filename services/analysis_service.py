@@ -121,7 +121,15 @@ class AnalysisService:
             report = None
             if has_gemini_key:
                 try:
-                    logger.info(f"Running live Google ADK Runner with Gemini for job {analysis_id}")
+                    logger.info(f"[{analysis_id}] GOOGLE_GENAI_API_KEY detected. Initializing live Google ADK multi-agent runner...")
+                    await self.emit_event(PipelineStatusEvent(
+                        analysis_id=analysis_id,
+                        stage="Live Agent Execution",
+                        stage_index=2,
+                        total_stages=3,
+                        message="🚀 Running live Google Gemini 2.0 Flash agents with Parallel Search MCP..."
+                    ))
+
                     from agents.pipeline import build_greenlight_pipeline
                     from google.adk.runners import Runner
                     from google.adk.sessions import InMemorySessionService
@@ -147,7 +155,7 @@ class AnalysisService:
                             for part in event.content.parts:
                                 text_chunk = getattr(part, "text", None)
                                 if text_chunk:
-                                    logger.debug(f"ADK Stream: {text_chunk[:80]}")
+                                    logger.info(f"[{analysis_id}] ADK Event: {text_chunk[:100]}")
 
                     updated_session = await session_service.get_session(
                         app_name="greenlight", user_id="producer_clearance", session_id=session.id
@@ -158,12 +166,30 @@ class AnalysisService:
                             report = live_output
                         elif isinstance(live_output, dict):
                             report = ClearanceReport(**live_output)
+                        elif isinstance(live_output, str):
+                            try:
+                                report = ClearanceReport.model_validate_json(live_output)
+                            except Exception:
+                                report = ClearanceReport(**json.loads(live_output))
+
+                        if report:
+                            report.execution_mode = "live_gemini_adk"
+                            logger.info(f"[{analysis_id}] Live ADK Gemini execution successfully generated ClearanceReport (score={report.greenlight_score})!")
                 except Exception as adk_err:
-                    logger.warning(f"ADK runner encounter ({adk_err}); proceeding with verified clearance dossier engine.")
+                    logger.error(f"[{analysis_id}] Live ADK runner error: {adk_err}", exc_info=True)
+                    await self.emit_event(PipelineStatusEvent(
+                        analysis_id=analysis_id,
+                        stage="ADK Warning",
+                        stage_index=2,
+                        total_stages=3,
+                        message=f"⚠️ Live ADK runner encountered: {adk_err}. Falling back to deterministic engine."
+                    ))
 
             if not report:
+                logger.info(f"[{analysis_id}] Using deterministic clearance engine (execution_mode='deterministic_engine').")
                 await asyncio.sleep(1.5)
                 report = await self._generate_report(analysis_id, script_text, script_title)
+                report.execution_mode = "deterministic_engine"
 
             self.reports[analysis_id] = report
 

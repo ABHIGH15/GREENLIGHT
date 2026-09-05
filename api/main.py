@@ -46,11 +46,18 @@ async def serve_dashboard():
 
 @app.get("/health")
 async def health_check():
-    """Health check endpoint for Cloud Run."""
+    """Health check endpoint for Cloud Run & API status."""
+    has_gemini = bool(os.environ.get("GOOGLE_GENAI_API_KEY", "").strip())
+    has_parallel = bool(os.environ.get("PARALLEL_API_KEY", "").strip())
     return {
         "status": "healthy",
         "service": "greenlight-clearance-copilot",
-        "mcp_target": "https://search-mcp.parallel.ai/mcp"
+        "mcp_target": "https://search-mcp.parallel.ai/mcp",
+        "keys_configured": {
+            "google_genai_api_key": has_gemini,
+            "parallel_api_key": has_parallel
+        },
+        "default_execution_mode": "live_gemini_adk" if has_gemini else "deterministic_engine"
     }
 
 
