@@ -58,7 +58,7 @@ Deliver authoritative, source-cited findings that an insurance broker can immedi
 """
 
 
-def create_title_clearance_agent(tools: List[Any], model: str = "gemini-3.7-flash") -> Agent:
+def create_title_clearance_agent(tools: List[Any], model: str = "gemini-3.5-flash-lite") -> Agent:
     """Creates the Stage 2c Title & Premise Clearance Agent with Parallel MCP tools and MPAA clearance tools."""
     # Ensure local MPAA title clearance tool is registered alongside MCP web search tools
     all_tools = [check_mpaa_title_rules] + list(tools)

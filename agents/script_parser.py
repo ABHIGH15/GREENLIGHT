@@ -16,7 +16,7 @@ Output your findings adhering strictly to the structured schema. Be thorough—c
 """
 
 
-def create_script_parser_agent(model: str = "gemini-3.7-flash") -> Agent:
+def create_script_parser_agent(model: str = "gemini-3.5-flash-lite") -> Agent:
     """Creates the Stage 1 Script Parser Agent in Google ADK."""
     return Agent(
         name="ScriptParserAgent",

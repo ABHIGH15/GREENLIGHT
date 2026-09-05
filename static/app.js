@@ -1,8 +1,33 @@
-// GREENLIGHT: Studio Pre-Production Script Clearance Client Engine
 let currentAnalysisId = null;
 let currentReportData = null;
 let activeCategoryFilter = "ALL";
 let selectedFile = null;
+let auditStartTime = null;
+let timerInterval = null;
+
+function startLiveTimer() {
+  auditStartTime = Date.now();
+  const timerElem = document.getElementById("liveTimer");
+  if (timerInterval) clearInterval(timerInterval);
+  if (timerElem) timerElem.textContent = "0.0s";
+  timerInterval = setInterval(() => {
+    if (timerElem && auditStartTime) {
+      const elapsed = ((Date.now() - auditStartTime) / 1000).toFixed(1);
+      timerElem.textContent = `${elapsed}s`;
+    }
+  }, 100);
+}
+
+function stopLiveTimer() {
+  if (timerInterval) {
+    clearInterval(timerInterval);
+    timerInterval = null;
+  }
+  if (auditStartTime) {
+    return ((Date.now() - auditStartTime) / 1000).toFixed(1);
+  }
+  return null;
+}
 
 document.addEventListener("DOMContentLoaded", () => {
   const dropZone = document.getElementById("dropZone");
@@ -148,6 +173,7 @@ async function startClearanceAudit(text, file) {
   logConsole.innerHTML = "";
 
   resetSteppers();
+  startLiveTimer();
   appendLog("[ORCHESTRATOR] Submitting script payload to Google ADK pipeline...");
 
   try {
@@ -275,7 +301,9 @@ async function fetchAndRenderReport(analysisId) {
         execText.innerHTML = `⚙️ Deterministic Clearance Engine (Stand-in Mode)`;
       }
     }
-    document.getElementById("reportMeta").innerHTML = `Analysis ID: ${report.analysis_id} | Completed: ${new Date(report.generated_at).toLocaleString()}`;
+    const elapsedSecs = stopLiveTimer();
+    const durationLabel = elapsedSecs ? ` | ⏱️ Duration: <strong>${elapsedSecs}s</strong> (Concurrent Multi-Agent Fan-Out)` : "";
+    document.getElementById("reportMeta").innerHTML = `Analysis ID: ${report.analysis_id}${durationLabel} | Generated: ${new Date(report.generated_at).toLocaleTimeString()}`;
     
     // Score & Gauge
     const scoreVal = document.getElementById("scoreVal");

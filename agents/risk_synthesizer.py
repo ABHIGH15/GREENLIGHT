@@ -40,7 +40,7 @@ Output your final synthesized report adhering strictly to this schema:
 - `underwriting_summary`: A professional 3-paragraph executive legal memo structured as follows:
   1. **Executive Risk Assessment**: High-level risk posture and insurable status for E&O policy binding.
   2. **Production Remediation**: Required actions for production and art departments (renaming characters, greeking props, clearing titles).
-  3. **Clearance Efficiency**: Turnaround and cost comparison against traditional clearance bureaus (saving 5–10 business days and $1,500–$4,000+).
+  3. **Clearance Efficiency**: Turnaround comparison against traditional manual clearance review workflows (compressing 5–10 business days of manual research into minutes). Do NOT output fabricated or estimated dollar amounts. Focus strictly on turnaround time savings and accelerated E&O insurance binder readiness.
 - `stats`: Object with `total_flags` (int), `high_severity` (int), `medium_severity` (int), `low_severity` (int), and `turnaround_saved` ("5–10 Business Days").
 - `risks`: Array of RiskItem objects conforming to:
   - `id`: e.g. "RISK-TITLE-01", "RISK-NAME-01", "RISK-BRAND-01", "RISK-PROP-01"

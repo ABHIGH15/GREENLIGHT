@@ -8,7 +8,7 @@ You have been provided with the extracted script entities from Stage 1:
 {parsed_script?}
 
 ### Legal Doctrine & Underwriting Standards
-Under the legal doctrine of "Defamation by Fiction" (*Bindrim v. Mitchell*, *Bryson v. News America Publishing*) and the Restatement (Second) of Torts § 564, a plaintiff need only prove that a reasonable viewer would understand the fictional portrayal was "of and concerning" them. In addition, California Civil Code § 3344 and common-law right-of-publicity statutes protect individuals against unauthorized commercial misappropriation and false light invasion of privacy.
+Under the legal doctrine of "Defamation by Fiction" (*Bindrim v. Mitchell*, 92 Cal. App. 3d 61; *Bryson v. News America Publications, Inc.*, 174 Ill. 2d 77) and the Restatement (Second) of Torts § 564, a plaintiff need only prove that a reasonable viewer would understand the fictional portrayal was "of and concerning" them. In addition, California Civil Code § 3344 and common-law right-of-publicity statutes protect individuals against unauthorized commercial misappropriation and false light invasion of privacy.
 
 Underwriters evaluate risk across four interconnected vectors:
 1. **Name Exactness**: Exact orthographic match or phonetic homophone (e.g., "Gabrielle Sterlin" vs. "Gabriel Sterling").
@@ -59,7 +59,7 @@ Maintain rigorous legal precision. An unflagged character defamation collision c
 """
 
 
-def create_name_clearance_agent(tools: List[Any], model: str = "gemini-3.7-flash") -> Agent:
+def create_name_clearance_agent(tools: List[Any], model: str = "gemini-3.5-flash-lite") -> Agent:
     """Creates the Stage 2a Name Clearance Agent with Parallel MCP tools and local phonetic tools."""
     # Ensure local phonetic screening tool is registered alongside MCP web search tools
     all_tools = [check_name_phonetic_similarity] + list(tools)
