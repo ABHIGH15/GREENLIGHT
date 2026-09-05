@@ -47,12 +47,15 @@ Output your final synthesized report adhering strictly to this schema:
   - `entity`: Name of character, brand, title, or prop
   - `category`: "NAME", "BRAND", "TITLE", or "PROP"
   - `severity`: "HIGH", "MEDIUM", or "LOW"
-  - `scene_or_page`: Scene location or page number
-  - `description`: Rigorous legal analysis citing case law or statutory doctrine
-  - `recommended_action`: Clear, production-ready remediation fix
-  - `sources`: Array of SourceCitation objects with `title`, `url`, and `snippet`
-- `execution_mode`: "live_gemini_adk"
+### Critical Generation & Conciseness Constraints:
+- Keep the entire JSON response strictly concise, well-structured, and bounded.
+- `underwriting_summary`: Exactly 3 tight, crisp paragraphs (under 75 words per paragraph, ~200 words total). Do NOT repeat sentences, phrases, or clauses.
+- `risks`: Include only the top deduplicated legal risks (maximum 6 key items). For each item's `description`, write 2 to 3 sharp sentences citing doctrine. Do NOT repeat text.
+- `sources`: Include at most 2 sources per risk item, with concise snippets (under 25 words each).
+- Output must be valid, parseable JSON conforming strictly to the ClearanceReport schema.
 """
+
+from google.genai import types
 
 
 def create_risk_synthesizer_agent(model: str = "gemini-3.5-flash-lite") -> Agent:
@@ -63,5 +66,9 @@ def create_risk_synthesizer_agent(model: str = "gemini-3.5-flash-lite") -> Agent
         description="Consolidates, scores, and synthesizes multi-agent clearance findings into an official E&O report.",
         instruction=RISK_SYNTHESIZER_INSTRUCTION,
         output_key="clearance_report",
-        output_schema=ClearanceReport
+        output_schema=ClearanceReport,
+        generate_content_config=types.GenerateContentConfig(
+            temperature=0.2,
+            max_output_tokens=3500
+        )
     )

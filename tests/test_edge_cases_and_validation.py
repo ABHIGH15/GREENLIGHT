@@ -117,14 +117,19 @@ class TestCleanScriptAndDeterministicScoring(unittest.TestCase):
         self.assertNotIn("uninsurable exposure", report.underwriting_summary)
 
 
-class TestSeededScriptsHitRate(unittest.TestCase):
-    """Tests empirical detection hit-rate against isolated, single-issue landmines."""
+class TestDeterministicFallbackEngine(unittest.TestCase):
+    """Verifies that the deterministic fallback engine correctly parses known clearance landmines
+
+    NOTE: This test suite verifies the offline deterministic fallback rules and report formatting.
+    It does NOT invoke live Gemini or Parallel Search MCP (which takes ~50s per run).
+    Live agentic evaluation is performed separately via scripts/evaluate_live_agents.py.
+    """
 
     def setUp(self):
         self.service = AnalysisService()
 
-    def test_name_collision_seeded_script(self):
-        """Script seeded only with living executive Gabriel Sterling."""
+    def test_fallback_name_collision_detection(self):
+        """Fallback engine flags living executive Gabriel Sterling as HIGH risk."""
         script = (
             "SCENE 1 - INT. BIOTECH BOARDROOM - NIGHT\n"
             "GABRIEL STERLING, ruthless biotechnology CEO, dumps toxic waste into the municipal reservoir.\n"
@@ -140,8 +145,8 @@ class TestSeededScriptsHitRate(unittest.TestCase):
         self.assertTrue(any("Gabriel Sterling" in r.entity for r in name_risks))
         self.assertEqual(name_risks[0].severity, RiskSeverity.HIGH)
 
-    def test_brand_tarnishment_seeded_script(self):
-        """Script seeded with Rolex and Glock weapon malfunction / extortion."""
+    def test_fallback_brand_tarnishment_detection(self):
+        """Fallback engine flags Rolex and Glock weapon depiction as MEDIUM risk."""
         script = (
             "SCENE 1 - EXT. ALLEY - NIGHT\n"
             "The masked assailant checks his Rolex Submariner. Exactly midnight.\n"
@@ -157,8 +162,8 @@ class TestSeededScriptsHitRate(unittest.TestCase):
         self.assertTrue(any("Glock" in r.entity or "Rolex" in r.entity for r in brand_risks))
         self.assertEqual(brand_risks[0].severity, RiskSeverity.MEDIUM)
 
-    def test_title_collision_seeded_script(self):
-        """Script titled 'The Apprentice's Revenge' colliding with 2024 theatrical title."""
+    def test_fallback_title_collision_detection(self):
+        """Fallback engine flags 'The Apprentice's Revenge' collision with 2024 theatrical title."""
         script = (
             "SCENE 1 - INT. OFFICE - DAY\n"
             "A corporate drama about young interns fighting for a promotion.\n"
@@ -173,8 +178,8 @@ class TestSeededScriptsHitRate(unittest.TestCase):
         self.assertTrue(any("Apprentice" in r.entity for r in title_risks))
         self.assertEqual(title_risks[0].severity, RiskSeverity.HIGH)
 
-    def test_nanpa_phone_seeded_script(self):
-        """Script speaking non-cleared phone number 555-0250 (outside 0100-0199 range)."""
+    def test_fallback_nanpa_phone_detection(self):
+        """Fallback engine flags phone number 555-0250 outside reserved NANPA 0100-0199 range."""
         script = (
             "SCENE 1 - INT. KITCHEN - DAY\n"
             "BOB\nCall me on my direct line, (415) 555-0250, before six.\n"
@@ -189,23 +194,22 @@ class TestSeededScriptsHitRate(unittest.TestCase):
         self.assertTrue(any("555-0250" in r.entity for r in prop_risks))
         self.assertEqual(prop_risks[0].severity, RiskSeverity.HIGH)
 
-    def test_aggregate_hit_rate(self):
-        """Verifies 100% empirical hit rate (4/4 landmine categories caught)."""
+    def test_fallback_rule_coverage(self):
+        """Verifies 100% rule coverage in fallback engine across all 4 monitored risk categories."""
         test_cases = [
             ("GABRIEL STERLING CEO dumps waste", "Biotech", "NAME"),
             ("He brandished the Glock 19 and checked his Rolex", "Alley", "BRAND"),
             ("General drama", "The Apprentice's Revenge", "TITLE"),
             ("Dial (415) 555-0250 right now", "Dial", "PROP"),
         ]
-        hits = 0
+        caught = 0
         for text, title, expected_cat in test_cases:
-            rep = asyncio.run(self.service._generate_report("test_hit", text, title))
+            rep = asyncio.run(self.service._generate_report("test_coverage", text, title))
             categories_caught = [r.category.value for r in rep.risks]
             if expected_cat in categories_caught:
-                hits += 1
+                caught += 1
 
-        hit_rate = (hits / len(test_cases)) * 100.0
-        self.assertEqual(hit_rate, 100.0, f"Expected 100% hit rate, got {hit_rate}%")
+        self.assertEqual(caught, len(test_cases), f"Fallback engine missed {len(test_cases) - caught} categories")
 
 
 if __name__ == "__main__":
