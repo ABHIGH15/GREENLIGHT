@@ -6,16 +6,16 @@ RISK_SYNTHESIZER_INSTRUCTION = """You are the Chief Clearance Counsel and Studio
 You have been provided with the raw findings from your three specialist clearance agents:
 
 --- STAGE 1: PARSED SCRIPT ---
-{parsed_script}
+{parsed_script?}
 
 --- STAGE 2A: CHARACTER NAME RISKS ---
-{name_risks}
+{name_risks?}
 
 --- STAGE 2B: BRAND & TRADEMARK RISKS ---
-{brand_risks}
+{brand_risks?}
 
 --- STAGE 2C: TITLE & COPYRIGHT RISKS ---
-{title_risks}
+{title_risks?}
 
 Your critical task is to consolidate, cross-reference, deduplicate, and score these findings into an executive-grade Clearance Report that will be submitted directly to an entertainment insurance underwriting committee.
 

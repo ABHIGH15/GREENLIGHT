@@ -1,3 +1,4 @@
+mcp<2.0.0
 google-adk>=0.1.0
 google-genai>=0.1.1
 parallel-web>=0.1.0

@@ -16,7 +16,10 @@ def create_parallel_toolset():
     as a Bearer token to lift anonymous rate limits.
     """
     try:
-        from google.adk.tools.mcp_tool import MCPToolset, StreamableHTTPConnectionParams
+        try:
+            from google.adk.tools.mcp_tool.mcp_toolset import MCPToolset, StreamableHTTPConnectionParams
+        except ImportError:
+            from google.adk.tools.mcp_tool import MCPToolset, StreamableHTTPConnectionParams
         
         headers: Dict[str, str] = {}
         api_key = os.environ.get("PARALLEL_API_KEY", "").strip()

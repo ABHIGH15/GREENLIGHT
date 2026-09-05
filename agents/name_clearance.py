@@ -4,7 +4,7 @@ from google.adk.agents import Agent
 NAME_CLEARANCE_INSTRUCTION = """You are the Senior Character Name & Right-of-Publicity Clearance Specialist for film & television E&O insurance.
 
 You have been provided with the extracted script entities from Stage 1:
-{parsed_script}
+{parsed_script?}
 
 Your sole focus is to investigate every character name (especially full names, antagonists, politicians, business leaders, criminals, and corrupt figures) against the open web to prevent defamation, false light invasion of privacy, and right-of-publicity claims.
 

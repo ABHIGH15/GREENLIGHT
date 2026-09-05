@@ -1,7 +1,7 @@
 import os
 import json
 import asyncio
-from fastapi import APIRouter, UploadFile, File, Form, HTTPException
+from fastapi import APIRouter, UploadFile, File, Form, HTTPException, Request
 from fastapi.responses import StreamingResponse, JSONResponse
 from typing import Optional
 
@@ -32,31 +32,36 @@ async def get_sample_script():
 
 @router.post("/analyze")
 async def analyze_script(
-    request: Optional[AnalysisRequest] = None,
+    request: Request,
     file: Optional[UploadFile] = File(None),
     script_text: Optional[str] = Form(None),
     script_title: Optional[str] = Form(None)
 ):
-    """Kicks off the multi-agent clearance pipeline from uploaded PDF or raw text."""
+    """Kicks off the multi-agent clearance pipeline from uploaded PDF, multipart form, or JSON body."""
     text_to_analyze = ""
     title_to_analyze = script_title
 
-    if file:
+    content_type = request.headers.get("content-type", "").lower()
+    if "application/json" in content_type:
+        try:
+            body = await request.json()
+            text_to_analyze = body.get("script_text", "")
+            if not title_to_analyze and body.get("script_title"):
+                title_to_analyze = body.get("script_title")
+        except Exception:
+            pass
+
+    if not text_to_analyze and file:
         file_bytes = await file.read()
-        if file.filename.lower().endswith(".pdf"):
+        if file.filename and file.filename.lower().endswith(".pdf"):
             text_to_analyze = extract_text_from_pdf(file_bytes)
         else:
             text_to_analyze = file_bytes.decode("utf-8", errors="ignore")
-        if not title_to_analyze:
+        if not title_to_analyze and file.filename:
             title_to_analyze = file.filename.rsplit(".", 1)[0].replace("_", " ").title()
 
-    elif script_text:
+    elif not text_to_analyze and script_text:
         text_to_analyze = script_text
-
-    elif request and request.script_text:
-        text_to_analyze = request.script_text
-        if request.script_title:
-            title_to_analyze = request.script_title
 
     text_to_analyze = clean_screenplay_text(text_to_analyze)
 

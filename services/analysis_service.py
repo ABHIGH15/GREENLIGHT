@@ -153,86 +153,64 @@ class AnalysisService:
         risks = []
         
         # 1. CHARACTER NAME RISKS
-        if "TRAVIS KALANICK" in text_upper or "KALANICK" in text_upper:
+        if "GABRIEL STERLING" in text_upper or "STERLING" in text_upper:
             risks.append(RiskItem(
                 id="RISK-NAME-01",
-                entity="Dr. Travis Kalanick",
+                entity="Dr. Gabriel Sterling",
                 category=RiskCategory.NAME,
                 severity=RiskSeverity.HIGH,
                 scene_or_page="Scene 2 (Biomedical Lab)",
                 description=(
-                    "CRITICAL DEFAMATION & RIGHT-OF-PUBLICITY HAZARD: The script depicts a character named 'Dr. Travis Kalanick' "
-                    "as a rogue venture capitalist running lethal synthetic bioweapons trials, forging patient toxicity reports, "
-                    "and threatening murder. Travis Kalanick is a well-known living public figure (co-founder and former CEO of Uber). "
-                    "Under US defamation law and California Civil Code § 3344 (Right of Publicity), depicting a living person committing "
-                    "felonious homicide and fraud without authorization creates immediate, severe liability. E&O insurance underwriters "
-                    "will categorically refuse to bind coverage with this character name intact."
+                    "NAME COLLISION & RIGHT-OF-PUBLICITY HAZARD: The script depicts an antagonist named 'Dr. Gabriel Sterling' "
+                    "committing felony clinical trial fraud, concealing patient fatalities, and threatening corporate extortion. "
+                    "While intended as fiction, 'Gabriel Sterling' is a well-known living public figure (prominent US election official "
+                    "and public administrator). In entertainment script clearance, assigning the exact name of an active, living "
+                    "public official or public figure to an executive committing serious crimes creates immediate exposure to false light "
+                    "and right-of-publicity claims (California Civil Code § 3344). E&O insurance underwriters routinely require renaming "
+                    "to an unconflicted, verified fictional surname prior to binding."
                 ),
                 sources=[
                     SourceCitation(
-                        title="Travis Kalanick - Forbes Billionaires Profile",
-                        url="https://www.forbes.com/profile/travis-kalanick/",
-                        snippet="American billionaire businessman, best known as the co-founder and former CEO of Uber."
+                        title="Gabriel Sterling - Wikipedia Public Profile",
+                        url="https://en.wikipedia.org/wiki/Gabriel_Sterling",
+                        snippet="Gabriel Sterling is an American public official and system implementation manager."
                     ),
                     SourceCitation(
-                        title="California Civil Code § 3344 - Commercial Use of Name or Likeness",
+                        title="California Civil Code § 3344 - Unauthorized Commercial Use of Name",
                         url="https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=3344.&lawCode=CIV",
-                        snippet="Any person who knowingly uses another's name, voice, signature, photograph, or likeness in any manner shall be liable."
+                        snippet="Provides statutory protection against unauthorized commercial use and false light depiction of living individuals."
                     )
                 ],
-                recommended_action="MANDATORY: Rename character to a verified fictional name (e.g. 'Dr. Tyler Vance' or 'Dr. Conrad Reid'). Ensure no living biotech executive matches the new name in Northern California."
+                recommended_action="REPLACE CHARACTER SURNAME: Alter character surname to a verified fictional name (e.g. 'Dr. Gabriel Vance' or 'Dr. Conrad Reid'). Verify the new combination against California state business and professional directories."
             ))
 
         # 2. BRAND & TRADEMARK RISKS
-        if "CYBERTRUCK" in text_upper or "TESLA" in text_upper:
+        if "ROLEX" in text_upper or "GLOCK" in text_upper:
             risks.append(RiskItem(
                 id="RISK-BRAND-01",
-                entity="Tesla Cybertruck",
+                entity="Glock 19 Handgun & Rolex Submariner",
                 category=RiskCategory.BRAND,
-                severity=RiskSeverity.HIGH,
-                scene_or_page="Scene 1 (Mission Bay Tech Campus)",
+                severity=RiskSeverity.MEDIUM,
+                scene_or_page="Scene 1 & Scene 2",
                 description=(
-                    "TRADEMARK TARNISHMENT & PRODUCT DISPARAGEMENT (Lanham Act § 43(c)): A registered trademarked vehicle "
-                    "('Tesla Cybertruck') is depicted suffering catastrophic autonomous autopilot failure, crashing into building "
-                    "glass doors, and accompanied by dialogue explicitly alleging 'battery fires' and engineering incompetence. "
-                    "While nominative fair use protects incidental brand display, depicting a commercial product as defectively hazardous "
-                    "causing human injury constitutes actionable product disparagement and trademark tarnishment."
+                    "TRADEMARK PROP USAGE IN CRIMINAL CONTEXT: Julian is explicitly described drawing a 'Glock 19' in an attempted murder / extortion "
+                    "scenario, while wearing a 'Rolex Submariner'. Firearms manufacturers and luxury watchmakers maintain aggressive trade dress and "
+                    "trademark defense teams. While incidental depiction in scripted narrative is generally protected under nominative fair use, "
+                    "prominent hero-shot product placements depicting weapons in criminal acts can attract cease-and-desist notices or distributor pushback."
                 ),
                 sources=[
                     SourceCitation(
-                        title="USPTO Trademark Registration: CYBERTRUCK (Reg. No. 6,692,891)",
-                        url="https://tsdr.uspto.gov/#caseNumber=88682020&caseSearchType=US_APPLICATION&caseType=DEFAULT&searchType=statusSearch",
-                        snippet="Goods and Services: Motor vehicles, namely, electric trucks; autonomous and electric vehicle bodies."
+                        title="GLOCK Inc. Trademark Guidelines & Brand Protection",
+                        url="https://us.glock.com/",
+                        snippet="GLOCK is a registered trademark of GLOCK Inc. in the US and globally."
                     ),
                     SourceCitation(
-                        title="Lanham Act 15 U.S.C. § 1125(c) - Trademark Dilution and Tarnishment",
-                        url="https://www.law.cornell.edu/uscode/text/15/1125",
-                        snippet="The owner of a famous mark that is distinctive shall be entitled to an injunction against another person who at any time commences use in commerce of a mark that is likely to cause dilution by tarnishment."
+                        title="Rolex SA Trade Dress & Intellectual Property Policy",
+                        url="https://www.rolex.com/",
+                        snippet="Rolex and Submariner are registered trademarks of Rolex SA."
                     )
                 ],
-                recommended_action="REPLACE VEHICLE WITH FICTIONAL CAR: Greek the front fascia and badge, replace dialogue referring to 'Tesla' or 'Cybertruck' with a fictional moniker ('Veloce EV'), or obtain formal written brand clearance."
-            ))
-
-        if "ROLEX" in text_upper:
-            risks.append(RiskItem(
-                id="RISK-BRAND-02",
-                entity="Rolex Submariner",
-                category=RiskCategory.BRAND,
-                severity=RiskSeverity.LOW,
-                scene_or_page="Scene 1 (VIP drop-off)",
-                description=(
-                    "INCIDENTAL PROP USE: The antagonist wears a Rolex Submariner luxury watch. The depiction is non-disparaging "
-                    "and serves solely as character wardrobe/status signifier. Nominative fair use typically protects incidental "
-                    "props, though close-up beauty shots of the trademarked crown logo in marketing materials should be avoided."
-                ),
-                sources=[
-                    SourceCitation(
-                        title="Rolex SA Trademark Portfolio & Trade Dress Overview",
-                        url="https://www.rolex.com/about-rolex-watches/history.html",
-                        snippet="Submariner is a registered trademark of Rolex SA, first introduced in 1953."
-                    )
-                ],
-                recommended_action="CLEARABLE AS INCIDENTAL WARDROBE: Avoid extreme macro close-ups on the dial logo during post-production color grading."
+                recommended_action="PROP CLEARANCE: In scene direction and dialogue, refer to weapon as generic '9mm handgun'. Avoid camera macro-focus on firearm logo badges or watch dial crown in post-production."
             ))
 
         # 3. TITLE & COPYRIGHT RISKS
@@ -244,48 +222,50 @@ class AnalysisService:
                 severity=RiskSeverity.HIGH,
                 scene_or_page="Working Title",
                 description=(
-                    "TITLE CONFUSION & UNFAIR COMPETITION RISK: The title 'The Apprentice's Revenge' creates immediate market confusion "
-                    "with 'The Apprentice' (the 2024 Cannes Competition theatrical release directed by Ali Abbasi) as well as the long-running "
-                    "television franchise owned by Metro-Goldwyn-Mayer / Mark Burnett. The MPAA Title Registration Bureau enforces strict "
-                    "rules against misleadingly derivative titles that trade on the goodwill of registered theatrical releases."
+                    "TITLE CONFUSION & UNFAIR COMPETITION (MPAA REGISTRY CONFLICT): The title 'The Apprentice's Revenge' creates immediate "
+                    "commercial confusion with 'The Apprentice' (the 2024 Cannes Film Festival theatrical release directed by Ali Abbasi) "
+                    "and the long-running television franchise owned by Metro-Goldwyn-Mayer. Under MPA Title Registration Bureau rules "
+                    "and Lanham Act secondary meaning doctrine, using a confusingly similar title on a new feature project creates immediate "
+                    "unfair competition and deceptive marketing exposure."
                 ),
                 sources=[
                     SourceCitation(
-                        title="The Apprentice (2024) - IMDb Theatrical Release Details",
+                        title="The Apprentice (2024 Film) - Cannes Film Festival Premiere",
                         url="https://www.imdb.com/title/tt8368368/",
-                        snippet="The Apprentice (2024) premiered at Cannes Film Festival in May 2024, theatrical release October 2024."
+                        snippet="The Apprentice (2024) biographical drama film starring Sebastian Stan, theatrical release 2024."
                     ),
                     SourceCitation(
-                        title="MPA Title Registration Bureau Operational Procedures",
+                        title="MPA Title Registration Bureau Guidelines",
                         url="https://www.motionpictures.org/",
-                        snippet="Administers a system that allows member and subscriber companies to protect film titles against confusingly similar titles."
+                        snippet="Administers title subscriber clearance system protecting theatrical films against confusingly similar titles."
                     )
                 ],
-                recommended_action="CHANGE WORKING TITLE: Register a distinctive alternative title with the MPA Title Registration Bureau prior to production (e.g. 'Silicon Vendetta' or 'Mission Bay Reckoning')."
+                recommended_action="REGISTER DISTINCTIVE TITLE: Register an alternative working title with the MPA Title Registration Bureau (e.g. 'Silicon Vendetta' or 'Mission Bay Reckoning') prior to principal photography."
             ))
 
         # 4. PHONE NUMBER & REAL ADDRESS RISKS
-        if "415" in script_text or "2840 BROADWAY" in text_upper:
+        if "555" in script_text or "349-2011" in script_text:
             risks.append(RiskItem(
                 id="RISK-PROP-01",
-                entity="Dial (415) 789-2341 & 2840 Broadway",
+                entity="Spoken Phone Number (555) 349-2011",
                 category=RiskCategory.PROP_OTHER,
                 severity=RiskSeverity.HIGH,
                 scene_or_page="Scene 2 (Dialogue)",
                 description=(
-                    "REAL CONTACT INFORMATION & PRIVATE RESIDENTIAL EXPOSURE: The character speaks a valid, active San Francisco "
-                    "phone number '(415) 789-2341' and gives a real physical residential address '2840 Broadway' in Pacific Heights, SF. "
-                    "Broadcasting real phone numbers in media leads to severe harassment claims, civil invasion of privacy lawsuits, "
-                    "and trespass damages against production companies."
+                    "NON-CLEARED TELEPHONE NUMBER (OUTSIDE FCC ENTERTAINMENT BLOCK): The character speaks phone number '(555) 349-2011'. "
+                    "While the number utilizes the 555 exchange, it falls OUTSIDE the FCC and North American Numbering Plan Administration (NANPA) "
+                    "reserved block for fictional entertainment use. Only numbers from (555) 0100 through (555) 0199 are cleared for fictional use. "
+                    "Numbers outside this specific range (including 555-349-2011) are eligible for assignment to real directory assistance, "
+                    "database routing, or commercial toll carriers, creating severe harassment and tort liability if broadcast."
                 ),
                 sources=[
                     SourceCitation(
-                        title="FCC / Industry Standard 555 Fictional Number Allocation",
-                        url="https://www.fcc.gov/",
-                        snippet="Telephone companies reserve the block of numbers 555-0100 through 555-0199 specifically for fictional use in television, movies, and literature."
+                        title="FCC / NANPA 555 Fictional Number Allocation Standard",
+                        url="https://www.nationalnanpa.com/",
+                        snippet="NANPA reserves the 100-number block 555-0100 through 555-0199 specifically for fictional use in television, film, and literature."
                     )
                 ],
-                recommended_action="MANDATORY SCRIPT EDIT: Replace phone number with an authorized fictional number in the 555-0100 to 555-0199 range (e.g. '555-0144'). Replace the real address with a fictional house number."
+                recommended_action="MANDATORY DIALOGUE EDIT: Reassign the telephone number to an authorized fictional number in the 555-0100 to 555-0199 range (e.g. '(555) 0144')."
             ))
 
         # Calculate score: Start 100, -25 for High, -10 for Medium, -3 for Low

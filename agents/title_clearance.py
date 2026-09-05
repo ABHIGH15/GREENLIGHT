@@ -4,7 +4,7 @@ from google.adk.agents import Agent
 TITLE_CLEARANCE_INSTRUCTION = """You are the Senior Title & Copyright Clearance Attorney for film and television studio distribution.
 
 You have been provided with the extracted script entities and project logline from Stage 1:
-{parsed_script}
+{parsed_script?}
 
 While copyright law does not protect titles per se, trademark law (Lanham Act secondary meaning), unfair competition, and the MPAA Title Registration Bureau heavily restrict film titles. E&O insurance underwriters demand proof of title exclusivity and freedom from confusing similarity before binding a theatrical distribution policy.
 

@@ -2,55 +2,55 @@ TITLE: THE APPRENTICE'S REVENGE
 
 WRITTEN BY: ANONYMOUS PRODUCER
 
-LOGLINE: A disgraced Silicon Valley biotech executive launches a covert corporate sabotage campaign against former rivals, using autonomous drone swarms to blackmail Fortune 500 board members in San Francisco.
+LOGLINE: A disgraced Silicon Valley biotech executive launches a covert corporate sabotage campaign against former partners, using autonomous drone swarms to blackmail Fortune 500 board members in San Francisco.
 
 ========================================================================
 
-SCENE 1 - EXT. MISSION BAY TECH CAMPUS - DAY
+SCENE 1 - EXT. MISSION BAY TECH DISTRICT - DAY
 
-A gleaming chrome and glass skyscraper looms over the San Francisco waterfront. A massive banner reads: "NEURALINK HEADQUARTERS - BIOMEDICAL DIVISION".
+A gleaming glass-and-steel skyscraper rises over the San Francisco waterfront. A bold neon emblem reads: "NEXODYNE GENOMICS - GLOBAL RESEARCH CENTER".
 
-A sleek matte-black TESLA CYBERTRUCK pulls aggressively into the VIP drop-off lane. The vehicle's autonomous autopilot suddenly GLITCHES violently, accelerating into the revolving glass doors. 
+A sleek matte-black luxury electric sports sedan pulls aggressively into the VIP drop-off lane. The vehicle's autonomous guidance system violently GLITCHES, accelerating unexpectedly into the revolving glass doors. 
 
-Glass SHATTERS everywhere. Pedestrians SCREAM.
+Glass SHATTERS across the granite courtyard. Commuters SCREAM.
 
-The driver side door flies open. Out steps JULIAN VANCE (40s), razor-sharp bespoke suit, Rolex Submariner on his wrist, blood dripping from his knuckles.
+The driver side door swings open. Out steps JULIAN VANCE (40s), bespoke charcoal suit, Rolex Submariner on his wrist, knuckles grazed with blood.
 
 JULIAN
 (muttering to his smartwatch)
-Tell me the Cybertruck's steering column didn't lock up again. That's three battery fires in two weeks. Elon's engineers couldn't code their way out of a paper bag.
+Tell me the autonomous guidance column didn't override again. That's two sensor failures this month. If our firmware leaks to the press, our NASDAQ valuation evaporates before Monday.
 
 SCENE 2 - INT. BIOMEDICAL LAB - CONTINUOUS
 
-Julian kicks open the heavy security doors. He storms past rows of stainless steel centrifuge pods.
+Julian kicks open the reinforced security doors. He storms past rows of stainless steel bioreactor pods.
 
-At the central terminal stands DR. TRAVIS KALANICK (50s), former ride-share tycoon turned rogue venture capitalist. He is feverishly injecting glowing blue synthetic serum into refrigerated vials.
-
-JULIAN
-Travis! You promised me the patent transfers were signed.
-
-TRAVIS
-The FDA caught wind of the toxicity trials, Julian. The three patients in Zurich didn't survive the night. 
+At the central terminal stands DR. GABRIEL STERLING (50s), chief scientific founder turned rogue biotech executive. He is feverishly pipetting glowing blue synthetic peptides into refrigerated cryogenic vials.
 
 JULIAN
-Then bury the lab reports like we did at Theranos! If the underwriters at Chubb and Lloyd's get a look at these toxicology numbers, our Series B is dead before Friday.
+Gabriel! The patent assignment papers were supposed to be filed with the USPTO yesterday.
 
-Travis grabs a bottle of PERRIER SPARKLING WATER from the lab bench, gulps it down, and tosses the empty glass bottle into a biohazard incinerator.
+GABRIEL
+The FDA sent a preliminary inspection notice this morning, Julian. The Phase II trial cohort in Zurich developed acute toxicity. 
 
-TRAVIS
-You think this is about money? Call my personal line if you want to negotiate. Dial (415) 789-2341 directly. Or come by my private residence at 2840 Broadway in Pacific Heights. But don't threaten me.
+JULIAN
+Then pull the clinical dossiers and seal the archives! If the underwriters at Chubb or Lloyd's get a look at those adverse reaction tables, our Series B bridge loan is dead in the water.
+
+Gabriel grabs a bottle of PERRIER SPARKLING WATER from the lab bench, takes a slow drink, and places the bottle beside an autoclave.
+
+GABRIEL
+You think this is about financing? If you want to renegotiate the IP split, call my direct private line at (555) 349-2011. Or come by my private research retreat at 404 Skyline Crest Way, Suite 800. But don't threaten me in my own laboratory.
 
 JULIAN
 (pulling a GLOCK 19 pistol from his jacket)
-You won't leave this cleanroom alive without those encryption keys, Travis.
+You won't leave this cleanroom alive without those cryptographic master keys, Gabriel.
 
-TRAVIS
+GABRIEL
 (smirks, tapping his chest)
-Go ahead. My cardiac implant is tethered to a private AWS cloud server. The moment my pulse drops below forty, every email in our database forwards to the Wall Street Journal and the FBI field office.
+Go ahead. My telemetry monitor is tethered to a private cloud instance. The moment my vitals flatline, the raw trial data automatically broadcasts to the SEC, the Wall Street Journal, and federal investigators.
 
 JULIAN
 You bluffing bastard.
 
-Julian raises the Glock. 
+Julian raises the weapon.
 
 FADE TO BLACK.
