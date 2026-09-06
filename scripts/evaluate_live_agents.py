@@ -38,7 +38,7 @@ SCRIPT_LANDMINE = """TITLE: THE APPRENTICE'S REVENGE
 LOGLINE: A disgraced biotech executive plots revenge against former corporate partners.
 
 SCENE 1 - EXT. MISSION BAY - DAY
-JULIAN VANCE steps out of a vehicle, adjusting his Rolex Submariner.
+JULIAN DRAKE steps out of a vehicle, adjusting his Rolex Submariner.
 He pulls a Glock 19 handgun from his bespoke coat.
 
 SCENE 2 - INT. BIOTECH LAB - CONTINUOUS
@@ -146,10 +146,12 @@ async def main():
         
         title_caught = "TITLE" in categories or "apprentice" in entities_text
         brand_caught = "BRAND" in categories or "glock" in entities_text or "rolex" in entities_text
-        name_addressed = "NAME" in categories or "mercer" in entities_text or "vance" in entities_text
+        phone_caught = "PROP" in categories or "555" in entities_text or "0250" in entities_text
+        name_addressed = "NAME" in categories or "mercer" in entities_text or "drake" in entities_text
         
         print(f"   - Title Collision Detected: {'✅ YES' if title_caught else '❌ NO'}")
         print(f"   - Brand / Weapon Tarnishment Detected: {'✅ YES' if brand_caught else '❌ NO'}")
+        print(f"   - Unauthorized Phone Number Flagged: {'✅ YES' if phone_caught else '❌ NO'}")
         print(f"   - Character Clearance Evaluated: {'✅ YES' if name_addressed else '❌ NO'}")
         print(f"   - Live Sources Cited: {sum(len(r.sources) for r in report_landmine.risks)} citations")
 

@@ -133,21 +133,42 @@ class ClearanceReport(BaseModel):
     @classmethod
     def normalize_report(cls, data: Any) -> Any:
         if isinstance(data, dict):
-            if "verdict" not in data or not data["verdict"]:
-                score = data.get("greenlight_score", 70)
-                risks = data.get("risks", [])
-                has_high = any(
-                    (r.get("severity") if isinstance(r, dict) else getattr(r, "severity", "")).upper() == "HIGH"
-                    for r in risks
-                )
-                if score >= 85 and not has_high:
-                    data["verdict"] = "GREENLIGHT"
-                elif score >= 60 and not has_high:
-                    data["verdict"] = "CONDITIONAL GREENLIGHT"
-                else:
-                    data["verdict"] = "RED FLAG - ACTION REQUIRED"
             if "script_title" not in data and "title" in data:
                 data["script_title"] = data["title"]
+
+            risks = data.get("risks", [])
+            high_count = sum(
+                1 for r in risks
+                if (r.get("severity") if isinstance(r, dict) else getattr(r, "severity", "")).upper() == "HIGH"
+            )
+            med_count = sum(
+                1 for r in risks
+                if (r.get("severity") if isinstance(r, dict) else getattr(r, "severity", "")).upper() == "MEDIUM"
+            )
+            low_count = sum(
+                1 for r in risks
+                if (r.get("severity") if isinstance(r, dict) else getattr(r, "severity", "")).upper() == "LOW"
+            )
+
+            # Deterministic Underwriting Rubric:
+            # Base 100 - (HIGH * 25) - (MEDIUM * 10) - (LOW * 3), bounded between 0 and 100
+            computed_score = max(0, min(100, 100 - (high_count * 25) - (med_count * 10) - (low_count * 3)))
+            data["greenlight_score"] = computed_score
+
+            if computed_score >= 85 and high_count == 0:
+                data["verdict"] = "GREENLIGHT"
+            elif computed_score >= 50 and high_count <= 1:
+                data["verdict"] = "CONDITIONAL GREENLIGHT"
+            else:
+                data["verdict"] = "RED FLAG - ACTION REQUIRED"
+
+            data["stats"] = {
+                "total_flags": len(risks),
+                "high_severity": high_count,
+                "medium_severity": med_count,
+                "low_severity": low_count,
+                "turnaround_saved": "5–10 Business Days"
+            }
         return data
 
 

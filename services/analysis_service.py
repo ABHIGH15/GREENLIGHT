@@ -307,7 +307,7 @@ class AnalysisService:
                 ],
                 recommended_action=(
                     "MANDATORY CHARACTER RENAMING: Replace with a vetted fictional character name with zero California corporate "
-                    "or executive directory collisions. Verified distinctive alternatives: 'Alastair Vance', 'Theron Thorne', or 'Lucian Drake'."
+                    "or executive directory collisions. Verified distinctive alternatives: 'Alastair Hayes', 'Theron Thorne', or 'Lucian Cross'."
                 )
             ))
 

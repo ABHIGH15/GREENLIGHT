@@ -292,7 +292,7 @@ GREEKING_CATALOG: Dict[str, List[str]] = {
         "Neuralis", "Sentient Core", "Cognita Technologies", "Aegis AI", "Vektor Cloud"
     ],
     "pharma_biotech": [
-        "Nexura Health", "TheraCorp", "BioVance Labs", "GeneSys Pharma", "Solas Life Sciences"
+        "Nexura Health", "TheraCorp", "BioValence Labs", "GeneSys Pharma", "Solas Life Sciences"
     ],
     "beverage_food": [
         "FizzCo", "Summit Springs", "Sunburst Cola", "Alpine Crisp", "Zest Refresh"
