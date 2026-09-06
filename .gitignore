@@ -43,4 +43,5 @@ env/
 # Uploads & temporary artifacts
 uploads/
 scratch/
+test_clone/
 .DS_Store
