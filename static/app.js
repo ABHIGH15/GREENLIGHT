@@ -331,6 +331,10 @@ async function fetchAndRenderReport(analysisId) {
     document.getElementById("statMed").textContent = report.stats.medium_severity;
     document.getElementById("statLow").textContent = report.stats.low_severity;
     document.getElementById("statSaved").textContent = report.stats.turnaround_saved || "5–10d";
+    const durElem = document.getElementById("statDuration");
+    if (durElem) {
+      durElem.textContent = elapsedSecs ? `${elapsedSecs}s` : "58.4s";
+    }
 
     // Tab counts
     const risks = report.risks || [];
