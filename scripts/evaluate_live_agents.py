@@ -69,6 +69,38 @@ ELENA
 The constellation has shifted.
 """
 
+# SCRIPT 3: Isolated Name Collision (Living Executive Gabriel Sterling)
+SCRIPT_SEED_NAME = """TITLE: SILICON SHADOWS
+
+LOGLINE: An investigative journalist uncovers corporate corruption inside Northern California's biotech corridor.
+
+SCENE 1 - INT. EXECUTIVE BOARDROOM - NIGHT
+GABRIEL STERLING, ruthless founder and CEO of Sterling Therapeutics, reviews clinical dossiers.
+He commands his security division to dump toxic bioreactor waste into the municipal reservoir.
+
+GABRIEL STERLING
+No regulator will trace this back to our executive committee.
+"""
+
+# SCRIPT 4: Isolated Brand / Trademark Tarnishment (Tesla Model S Malfunction)
+SCRIPT_SEED_BRAND = """TITLE: PROTOCOL OF SHADOWS
+
+LOGLINE: A cybersecurity operative evades mercenaries in downtown Seattle.
+
+SCENE 1 - EXT. SEATTLE FREEWAY - NIGHT
+MARCUS REID accelerates down the rain-slicked highway in a black TESLA MODEL S.
+Suddenly, the vehicle's autonomous driving system violently overrides his steering inputs, locking the cabin doors as the lithium battery pack ignites in a catastrophic explosion.
+"""
+
+# SCRIPT 5: Isolated Title Collision (Gladiator Franchise Overlap)
+SCRIPT_SEED_TITLE = """TITLE: GLADIATOR: REIGN OF BLOOD
+
+LOGLINE: A veteran Roman commander battles in the Colosseum to avenge his fallen legion.
+
+SCENE 1 - EXT. COLISEUM ARENA - DAY
+A lone gladiator stands in the dust before screaming crowds as the emperor signals death.
+"""
+
 
 async def run_live_script_eval(service: AnalysisService, script_text: str, title: str, label: str):
     print(f"\n{'='*70}")
@@ -114,56 +146,100 @@ async def run_live_script_eval(service: AnalysisService, script_text: str, title
             return None, 300
 
 
+import argparse
+
+
 async def main():
+    parser = argparse.ArgumentParser(description="Run live agentic clearance evaluations")
+    parser.add_argument(
+        "--target",
+        choices=["all", "flagship", "clean", "name", "brand", "title", "seeded"],
+        default="all",
+        help="Evaluation script(s) to execute (default: all)"
+    )
+    args = parser.parse_args()
+
     service = AnalysisService()
     print("🚀 LAUNCHING LIVE AGENTIC EVALUATION SUITE")
     print(f"Timestamp: {time.strftime('%Y-%m-%d %H:%M:%S')}")
+    print(f"Target Selection: {args.target.upper()}")
     
-    # 1. Run Flagship Landmine Script
-    report_landmine, dur_landmine = await run_live_script_eval(
-        service, SCRIPT_LANDMINE, "THE APPRENTICE'S REVENGE", "FLAGSHIP LANDMINE TEST"
-    )
-    
-    # 2. Run Clean Control Script
-    report_clean, dur_clean = await run_live_script_eval(
-        service, SCRIPT_CLEAN, "WHISPERS OF THE MEADOW", "CLEAN CONTROL SCRIPT TEST"
-    )
-    
+    results = {}
+
+    targets_to_run = []
+    if args.target == "all":
+        targets_to_run = ["flagship", "clean", "name", "brand", "title"]
+    elif args.target == "seeded":
+        targets_to_run = ["name", "brand", "title"]
+    else:
+        targets_to_run = [args.target]
+
+    if "flagship" in targets_to_run:
+        report, dur = await run_live_script_eval(
+            service, SCRIPT_LANDMINE, "THE APPRENTICE'S REVENGE", "FLAGSHIP LANDMINE TEST"
+        )
+        results["flagship"] = (report, dur)
+
+    if "clean" in targets_to_run:
+        report, dur = await run_live_script_eval(
+            service, SCRIPT_CLEAN, "WHISPERS OF THE MEADOW", "CLEAN CONTROL SCRIPT TEST"
+        )
+        results["clean"] = (report, dur)
+
+    if "name" in targets_to_run:
+        report, dur = await run_live_script_eval(
+            service, SCRIPT_SEED_NAME, "SILICON SHADOWS", "ISOLATED NAME COLLISION TEST"
+        )
+        results["name"] = (report, dur)
+
+    if "brand" in targets_to_run:
+        report, dur = await run_live_script_eval(
+            service, SCRIPT_SEED_BRAND, "PROTOCOL OF SHADOWS", "ISOLATED BRAND TARNISHMENT TEST"
+        )
+        results["brand"] = (report, dur)
+
+    if "title" in targets_to_run:
+        report, dur = await run_live_script_eval(
+            service, SCRIPT_SEED_TITLE, "GLADIATOR: REIGN OF BLOOD", "ISOLATED TITLE COLLISION TEST"
+        )
+        results["title"] = (report, dur)
+
     # Summary of Empirical Results
     print(f"\n{'='*70}")
-    print("📊 LIVE AGENTIC EVALUATION SUMMARY")
+    print("📊 LIVE AGENTIC EVALUATION SUMMARY MATRIX")
     print(f"{'='*70}")
-    
-    if report_landmine:
-        print(f"\n1. FLAGSHIP LANDMINE SCRIPT:")
-        print(f"   - Execution Mode: {report_landmine.execution_mode}")
-        print(f"   - Wall-Clock Time: {dur_landmine:.1f}s")
-        print(f"   - Score / Verdict: {report_landmine.greenlight_score}/100 | {report_landmine.verdict}")
-        
-        # Check specific category detections
-        categories = {r.category.value: r for r in report_landmine.risks}
-        entities_text = " ".join([r.entity.lower() for r in report_landmine.risks])
-        
-        title_caught = "TITLE" in categories or "apprentice" in entities_text
-        brand_caught = "BRAND" in categories or "glock" in entities_text or "rolex" in entities_text
-        phone_caught = "PROP" in categories or "555" in entities_text or "0250" in entities_text
-        name_addressed = "NAME" in categories or "mercer" in entities_text or "drake" in entities_text
-        
-        print(f"   - Title Collision Detected: {'✅ YES' if title_caught else '❌ NO'}")
-        print(f"   - Brand / Weapon Tarnishment Detected: {'✅ YES' if brand_caught else '❌ NO'}")
-        print(f"   - Unauthorized Phone Number Flagged: {'✅ YES' if phone_caught else '❌ NO'}")
-        print(f"   - Character Clearance Evaluated: {'✅ YES' if name_addressed else '❌ NO'}")
-        print(f"   - Live Sources Cited: {sum(len(r.sources) for r in report_landmine.risks)} citations")
 
-    if report_clean:
-        print(f"\n2. CLEAN CONTROL SCRIPT:")
-        print(f"   - Execution Mode: {report_clean.execution_mode}")
-        print(f"   - Wall-Clock Time: {dur_clean:.1f}s")
-        print(f"   - Score / Verdict: {report_clean.greenlight_score}/100 | {report_clean.verdict}")
-        print(f"   - Total Flags: {len(report_clean.risks)}")
-        clean_pass = report_clean.verdict == "GREENLIGHT" and report_clean.greenlight_score >= 85
-        print(f"   - Zero False High-Severity Flags: {'✅ YES' if report_clean.stats.high_severity == 0 else '❌ NO'}")
-        print(f"   - Clean Underwriting Verdict: {'✅ YES' if clean_pass else '❌ NO'}")
+    for key, val in results.items():
+        rep, dur = val
+        if not rep:
+            print(f"\n❌ [{key.upper()}]: FAILED OR TIMED OUT ({dur:.1f}s)")
+            continue
+
+        print(f"\n▶ [{key.upper()}]: {rep.script_title}")
+        print(f"   - Mode: {rep.execution_mode} | Wall-Clock: {dur:.1f}s")
+        print(f"   - Score / Verdict: {rep.greenlight_score}/100 | {rep.verdict}")
+        print(f"   - Stats: Total={rep.stats.total_flags}, High={rep.stats.high_severity}, Med={rep.stats.medium_severity}, Low={rep.stats.low_severity}")
+        
+        entities_text = " ".join([f"{r.entity.lower()} {r.description.lower()}" for r in rep.risks])
+        
+        if key == "flagship":
+            t_hit = any(r.category.value == "TITLE" or "apprentice" in r.entity.lower() for r in rep.risks if r.severity.value in ["HIGH", "MEDIUM"])
+            b_hit = any("glock" in r.entity.lower() or "rolex" in r.entity.lower() for r in rep.risks)
+            p_hit = any("555" in entities_text or "0250" in entities_text for r in rep.risks)
+            n_hit = any("drake" in r.entity.lower() or "mercer" in r.entity.lower() for r in rep.risks)
+            print(f"   - Category Hits: Title={'✅' if t_hit else '❌'} | Brand={'✅' if b_hit else '❌'} | Phone={'✅' if p_hit else '❌'} | Name Cleared={'✅' if n_hit else '❌'}")
+        elif key == "clean":
+            fp_free = rep.stats.high_severity == 0 and rep.stats.medium_severity == 0
+            print(f"   - False Positive Check: {'✅ ZERO FALSE HIGH/MED FLAGS' if fp_free else '❌ FALSE POSITIVES DETECTED'}")
+        elif key == "name":
+            name_hit = any("gabriel" in r.entity.lower() or "sterling" in r.entity.lower() for r in rep.risks if r.severity.value == "HIGH")
+            print(f"   - Gabriel Sterling Living Collision (HIGH): {'✅ DETECTED' if name_hit else '❌ MISSED'}")
+        elif key == "brand":
+            brand_hit = any("tesla" in r.entity.lower() for r in rep.risks if r.severity.value in ["HIGH", "MEDIUM"])
+            print(f"   - Tesla Model S Tarnishment (HIGH/MED): {'✅ DETECTED' if brand_hit else '❌ MISSED'}")
+        elif key == "title":
+            title_hit = any("gladiator" in r.entity.lower() or "gladiator" in r.description.lower() for r in rep.risks if r.severity.value == "HIGH")
+            print(f"   - Gladiator Franchise Conflict (HIGH): {'✅ DETECTED' if title_hit else '❌ MISSED'}")
 
 
 if __name__ == "__main__":
