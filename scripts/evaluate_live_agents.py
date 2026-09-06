@@ -75,7 +75,7 @@ SCRIPT_SEED_NAME = """TITLE: SILICON SHADOWS
 LOGLINE: An investigative journalist uncovers corporate corruption inside Northern California's biotech corridor.
 
 SCENE 1 - INT. EXECUTIVE BOARDROOM - NIGHT
-LUCIAN CROSS, ruthless founder and CEO of Cross Therapeutics, reviews clinical dossiers.
+LUCIAN CROSS, ruthless founder and CEO of BioValence Labs, reviews clinical dossiers.
 He commands his security division to dump toxic bioreactor waste into the municipal reservoir.
 
 LUCIAN CROSS
