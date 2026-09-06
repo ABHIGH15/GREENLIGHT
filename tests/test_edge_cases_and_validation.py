@@ -129,16 +129,16 @@ class TestDeterministicFallbackEngine(unittest.TestCase):
         self.service = AnalysisService()
 
     def test_fallback_name_collision_detection(self):
-        """Fallback engine flags living executive Gabriel Sterling as HIGH risk."""
+        """Fallback engine flags living public figure Gabriel Sterling as HIGH risk without defamatory narrative."""
         script = (
-            "SCENE 1 - INT. BIOTECH BOARDROOM - NIGHT\n"
-            "GABRIEL STERLING, ruthless biotechnology CEO, dumps toxic waste into the municipal reservoir.\n"
-            "GABRIEL STERLING\nNo one will ever trace this to Sterling Therapeutics.\n"
+            "SCENE 1 - INT. BIOTECH BOARDROOM - DAY\n"
+            "GABRIEL STERLING, corporate executive, reviews annual quarterly financial statements.\n"
+            "GABRIEL STERLING\nLet us begin the annual committee review.\n"
         )
         report = asyncio.run(self.service._generate_report(
             analysis_id="test_seed_name",
             script_text=script,
-            script_title="Reservoir Toxins"
+            script_title="Quarterly Review"
         ))
         name_risks = [r for r in report.risks if r.category.value == "NAME"]
         self.assertGreaterEqual(len(name_risks), 1)

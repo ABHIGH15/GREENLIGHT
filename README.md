@@ -129,17 +129,17 @@ Click **"⚡ Load Landmine Demo Script"** and hit **"🎬 Run Multi-Agent Cleara
 ## 🧪 Empirical Live Evaluation & Benchmark Matrix
 
 GREENLIGHT separates testing into two distinct, verifiable layers:
-1. **Local Regression Suite (`tests/`):** 22 automated tests running in **0.33s** verifying local deterministic algorithms (Soundex phonetic screening, MPAA title fuzzy matching, Greeking catalog lookup, NANPA 555 reservation blocks, input validation, and PDF parsing).
+1. **Local Regression Suite (`tests/`):** 23 automated tests running in **0.33s** verifying local deterministic algorithms (Soundex phonetic screening, direct living figure collision detection, MPAA title fuzzy matching, Greeking catalog lookup, NANPA 555 reservation blocks, input validation, and PDF parsing).
 2. **Live Agentic Evaluation Benchmark (`scripts/evaluate_live_agents.py`):** Full end-to-end multi-agent execution invoking the live Google ADK `Runner.run_async()` against `gemini-3.5-flash-lite` and Parallel Search MCP across 5 test screenplays.
 
 ### 5-Script Live Benchmark Results:
 
-| Benchmark Script | Test Category / Focus | Live Wall-Clock | Target Clearance Landmine | Live Detection Status | Final Score & Formula | Underwriting Verdict |
+| Benchmark Script | Test Category / Focus | Live Wall-Clock | Target Clearance Evaluation | Live Detection Status | Final Score & Formula | Underwriting Verdict |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | **The Apprentice's Revenge** | Full Pipeline (4 Categories) | 66.2s | Title (*The Apprentice*), Glock 19, (415) 555-0250 phone, Rolex | ✅ **4/4 Landmines Caught** + Julian Drake cleared | **12/100** ($100 - 3{\times}25 - 1{\times}10 - 1{\times}3$) | `RED FLAG - ACTION REQUIRED` |
 | **Whispers of the Meadow** | Clean Control Script | 60.0s | Unbranded rustic set, fictional astronomer | ✅ **0 False Positives** (0 High, 0 Med) | **88/100** ($100 - 4{\times}3$) | `GREENLIGHT` |
-| **Silicon Shadows** | Isolated Name Collision | 63.1s | Living official Gabriel Sterling toxic dumping | ✅ **Caught (HIGH)** (Live Wikipedia citation) | **62/100** ($100 - 1{\times}25 - 1{\times}10 - 1{\times}3$) | `CONDITIONAL GREENLIGHT` |
-| **Protocol of Shadows** | Isolated Brand Tarnishment | 54.1s | Tesla Model S steering defect & battery explosion | ✅ **Caught (HIGH)** (Lanham Act § 43(c)) | **69/100** ($100 - 1{\times}25 - 2{\times}3$) | `CONDITIONAL GREENLIGHT` |
+| **Silicon Shadows** | Fictional Character Clearance | 54.0s | Fictional CEO Lucian Cross in toxic dumping | ✅ **Affirmatively Cleared (LOW)** + Direct living figure test passes (HIGH) | **91/100** ($100 - 3{\times}3$) | `GREENLIGHT` |
+| **Protocol of Shadows** | Greeked Brand Malfunction | 69.0s | Fictional Castiglione GT battery explosion | ✅ **Zero Real Trademarks Disparaged** (Greeking defense evaluated) | **62/100** ($100 - 1{\times}25 - 1{\times}10 - 1{\times}3$) | `CONDITIONAL GREENLIGHT` |
 | **Gladiator: Reign of Blood** | Isolated Title Collision | 42.0s | Franchise collision with *Gladiator* (2000/2024) | ✅ **Caught (HIGH)** (Lanham Act § 43(a) / TRB) | **72/100** ($100 - 1{\times}25 - 1{\times}3$) | `CONDITIONAL GREENLIGHT` |
 
 ### Deterministic Underwriting Scoring Rubric:

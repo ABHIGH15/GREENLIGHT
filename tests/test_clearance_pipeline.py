@@ -33,6 +33,19 @@ class TestClearanceTools(unittest.TestCase):
         self.assertEqual(clean["phonetic_risk"], "LOW")
         self.assertLess(clean["similarity_score"], 0.40)
 
+    def test_direct_living_figure_algorithmic_collision(self):
+        """Direct code-level test verifying living public figure collision matching without narrative scene."""
+        # Direct function call testing known public figure collision
+        res = check_name_phonetic_similarity("Gabriel Sterling", "Gabriel Sterling")
+        self.assertEqual(res["phonetic_risk"], "HIGH")
+        self.assertEqual(res["similarity_score"], 1.0)
+        self.assertEqual(res["assessment"], "Potential homophone or confusing phonetic equivalent")
+        
+        # Test clean invented protagonist name passes with zero risk
+        clean_res = check_name_phonetic_similarity("Lucian Cross", "Gabriel Sterling")
+        self.assertEqual(clean_res["phonetic_risk"], "LOW")
+        self.assertLess(clean_res["similarity_score"], 0.35)
+
     def test_suggest_greeking_alternatives(self):
         # Firearms
         res = suggest_greeking_alternatives("firearms_tactical", "Glock 19")
