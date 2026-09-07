@@ -46,7 +46,7 @@ async def serve_dashboard():
 
 @app.get("/health")
 async def health_check():
-    """Health check endpoint for Cloud Run & API status."""
+    """Health check endpoint for container & API status."""
     gemini_key = (
         os.environ.get("GOOGLE_GENAI_API_KEY", "").strip() or 
         os.environ.get("GOOGLE_API_KEY", "").strip() or 

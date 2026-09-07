@@ -1,5 +1,5 @@
 # GREENLIGHT: Autonomous Pre-Production Clearance Copilot
-# Cloud Run Container Configuration
+# Production Container Configuration
 FROM python:3.11-slim
 
 ENV PYTHONUNBUFFERED=1 \
@@ -22,7 +22,7 @@ RUN pip install --no-cache-dir --upgrade pip && \
 # Copy application source code
 COPY . .
 
-# Expose server port (Cloud Run standard: 8080)
+# Expose server port (Standard: 8080)
 EXPOSE 8080
 
 # Start FastAPI application

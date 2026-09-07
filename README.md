@@ -181,19 +181,30 @@ python scripts/evaluate_live_agents.py --target all
 
 ## Production Deployment
 
-GREENLIGHT is containerized with a production `Dockerfile` and configured for Google Cloud Run:
+GREENLIGHT is containerized via a production `Dockerfile` for deployment on modern container platforms (Render, Cloud Run, or any Docker runtime):
+
+### Deploy on Render (Recommended Free Tier)
+
+1. Connect your repository to [Render](https://render.com).
+2. Create a new **Web Service** and select the **Docker** runtime.
+3. Configure the environment variables:
+   - `GEMINI_MODEL`: `gemini-3.5-flash-lite`
+   - `GEMINI_REQUEST_PACING`: `4.2`
+   - `GOOGLE_GENAI_API_KEY`: Your Google GenAI API key
+   - `PARALLEL_API_KEY`: Your Parallel API key (optional)
+4. Deploy the service.
+
+> [!NOTE]
+> On Render's free tier, inactive instances spin down automatically. The initial cold start may take 30–60 seconds to wake the service upon the first inbound request. Subsequent requests execute with normal latency.
+
+### Local Container Run
 
 ```bash
-# Build container image via Google Cloud Build
-gcloud builds submit --tag gcr.io/YOUR_PROJECT_ID/greenlight
+# Build container image
+docker build -t greenlight:latest .
 
-# Deploy to Cloud Run with Gemini 3.5 Flash Lite configuration
-gcloud run deploy greenlight \
-  --image gcr.io/YOUR_PROJECT_ID/greenlight \
-  --platform managed \
-  --region us-central1 \
-  --allow-unauthenticated \
-  --set-env-vars GEMINI_MODEL=gemini-3.5-flash-lite,GEMINI_REQUEST_PACING=4.2
+# Run container locally
+docker run -p 8080:8080 --env-file .env greenlight:latest
 ```
 
 ---
