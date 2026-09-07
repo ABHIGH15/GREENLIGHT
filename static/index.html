@@ -3,20 +3,37 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GREENLIGHT — Pre-Production Script Clearance & Risk Copilot</title>
+  <title>GREENLIGHT — Pre-Production Script Clearance &amp; E&amp;O Risk Copilot</title>
+  <!-- Google Fonts: Cinzel (Cinema Titles), Courier Prime (Screenplay), Plus Jakarta Sans (UI) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
 
-  <!-- Studio Header -->
+  <!-- Ambient Cinematic Viewfinder Vignette -->
+  <div class="viewfinder-vignette"></div>
+
+  <!-- Studio Header & Viewfinder HUD -->
   <header class="studio-navbar">
     <div class="studio-brand">
-      <div class="brand-badge">🎬</div>
+      <div class="brand-badge">
+        <span class="slate-icon">🎬</span>
+        <span class="beacon-dot"></span>
+      </div>
       <div>
         <div class="brand-title">GREENLIGHT</div>
-        <div class="brand-tagline">Studio Clearance & Underwriting Copilot</div>
+        <div class="brand-tagline">Studio Clearance &amp; E&amp;O Underwriting Copilot</div>
       </div>
     </div>
+
+    <!-- Center Camera Timecode HUD -->
+    <div class="viewfinder-hud">
+      <span class="rec-dot"></span>
+      <span class="hud-text">REC [SCENE 01 / TAKE 01] · 35MM CELLULOID CLEARANCE TERMINAL</span>
+    </div>
+
     <div class="system-status">
       <div id="mcpPill" class="pill-badge green">
         <span class="pulse-dot"></span>
@@ -32,96 +49,145 @@
   <main class="main-content">
 
     <!-- Upload & Ingestion Panel -->
-    <section id="uploadSection" class="glass-panel">
+    <section id="uploadSection" class="glass-panel cinematic-frame">
+      <div class="frame-corner corner-tl"></div>
+      <div class="frame-corner corner-tr"></div>
+      <div class="frame-corner corner-bl"></div>
+      <div class="frame-corner corner-br"></div>
+
       <div class="upload-hero">
+        <div class="hero-pretitle">AGENTIC CINEMA PRE-PRODUCTION SUITE</div>
         <h1 class="hero-heading">Secure the Greenlight</h1>
         <p class="hero-subheading">
-          Automated multi-agent clearance for independent producers, line producers, and E&O insurance underwriters.
-          Detect character defamation, unapproved brand tarnishment, and title collisions in minutes instead of 5–10 business days.
+          Autonomous multi-agent clearance for producers, entertainment counsel, and E&amp;O insurance underwriters.
+          Cross-examine character defamation, trademark dilution, title exclusivity, and dialogue phone numbers against live USPTO and public registries in seconds.
         </p>
       </div>
 
+      <!-- Quick-Load Preset Scripts Bar -->
+      <div class="preset-scripts-bar">
+        <span class="preset-label">🎬 Benchmark Presets:</span>
+        <button id="btnPresetFlagship" class="preset-pill active" title="4 Clearance Landmines: Title, Glock 19, Rolex, (415) 555-0250, and Julian Drake">
+          <span>⚡</span> The Apprentice's Revenge (Flagship Landmine)
+        </button>
+        <button id="btnPresetCommon" class="preset-pill" title="Common Name False-Positive Control: David Miller">
+          <span>👤</span> Blueprint for Autumn (Common Name Control)
+        </button>
+        <button id="btnPresetClean" class="preset-pill" title="Clean Control Script: Fictional rustic astronomer">
+          <span>🌿</span> Whispers of the Meadow (Clean Control)
+        </button>
+      </div>
+
       <div class="drag-drop-area" id="dropZone">
-        <div class="upload-icon">📄</div>
+        <div class="drop-reticle"></div>
+        <div class="upload-icon">🎞️</div>
         <div style="font-weight: 700; font-size: 1.1rem; margin-bottom: 0.25rem;">
-          Drag & drop screenplay PDF or script text file
+          Drag &amp; drop screenplay PDF or script file
         </div>
         <div style="color: var(--text-muted); font-size: 0.85rem;">
-          Supports standard .pdf, .txt, .fountain, .fdx, or paste dialogue directly below
+          Supports standard .pdf, .txt, .fountain, .fdx, or paste dialogue directly into the studio terminal below
         </div>
         <input type="file" id="fileInput" accept=".pdf,.txt,.fountain,.fdx" style="display: none;">
       </div>
 
-      <div style="margin-top: 1.5rem;">
-        <label for="scriptInput" style="font-size: 0.85rem; font-weight: 700; text-transform: uppercase; color: var(--text-dim);">
-          Screenplay Text / Treatment Excerpt
-        </label>
+      <div class="script-editor-container">
+        <div class="script-editor-header">
+          <span class="editor-title">📜 SCREENPLAY TREATMENT / DRAFT VIEWER</span>
+          <span class="editor-format">STANDARD COURIER 12PT</span>
+        </div>
         <textarea id="scriptInput" class="script-textarea" placeholder="Paste screenplay text, scene dialogue, or scene headings here..."></textarea>
       </div>
 
       <div class="button-row">
         <button id="loadSampleBtn" class="btn-secondary">
-          <span>⚡</span> Load Landmine Demo Script
+          <span>⚡</span> Reload Selected Preset
         </button>
         <button id="runAuditBtn" class="btn-primary">
+          <span class="btn-glow-ring"></span>
           <span>🎬</span> Run Multi-Agent Clearance Audit
         </button>
       </div>
     </section>
 
     <!-- Live Execution & Progress Panel -->
-    <section id="progressSection" class="glass-panel" style="display: none;">
+    <section id="progressSection" class="glass-panel cinematic-frame" style="display: none;">
+      <div class="frame-corner corner-tl"></div>
+      <div class="frame-corner corner-tr"></div>
+      <div class="frame-corner corner-bl"></div>
+      <div class="frame-corner corner-br"></div>
+
+      <!-- Anamorphic Laser Scan Beam -->
+      <div class="optical-scan-beam"></div>
+
       <div style="text-align: center; margin-bottom: 2rem;">
-        <h2 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 0.5rem;">Multi-Agent Clearance In Progress</h2>
-        <p style="color: var(--text-muted); font-size: 0.9rem;">
-          ADK SequentialAgent pipeline orchestrating concurrent web-grounded clearance agents via Parallel Search MCP.
+        <div class="hero-pretitle" style="color: var(--color-cyan);">STAGE RUNNER IN PROGRESS</div>
+        <h2 style="font-family: var(--font-cinematic); font-size: 1.75rem; font-weight: 800; margin-bottom: 0.5rem; letter-spacing: 0.05em;">
+          Multi-Agent Legal Clearance In Progress
+        </h2>
+        <p style="color: var(--text-muted); font-size: 0.9rem; max-width: 600px; margin: 0 auto;">
+          Google ADK SequentialAgent coordinating 3 concurrent clearance specialists grounded in live web intelligence via Parallel Search MCP.
         </p>
-        <div id="liveTimerContainer" style="margin-top: 1rem; display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(6, 182, 212, 0.1); border: 1px solid rgba(6, 182, 212, 0.3); padding: 0.35rem 1rem; border-radius: 9999px;">
-          <span style="font-size: 0.85rem; color: var(--color-cyan); font-weight: 700;">⚡ Parallel Wall-Clock Time:</span>
-          <span id="liveTimer" style="font-family: monospace; font-size: 0.95rem; color: #FFFFFF; font-weight: 700;">0.0s</span>
+        <div id="liveTimerContainer" class="live-timer-badge">
+          <span class="rec-dot-pulse"></span>
+          <span style="font-size: 0.85rem; color: var(--color-cyan); font-weight: 700;">CONCURRENT RUNTIME:</span>
+          <span id="liveTimer" class="timer-digits">0.0s</span>
         </div>
       </div>
 
       <div class="stepper-container">
         <div class="step-card" id="step1">
-          <div class="step-num">Stage 1</div>
-          <div class="step-title">📄 Script Parser</div>
-          <div style="font-size: 0.75rem; color: var(--text-dim); margin-top: 0.35rem;">Extracting Characters, Brands & Titles</div>
+          <div class="step-num">Stage 1 · Sequential</div>
+          <div class="step-title">
+            <span class="film-reel-icon">🎞️</span>
+            Script Parser Agent
+          </div>
+          <div class="step-desc">Extracting Characters, Brands, Titles &amp; Numbers</div>
         </div>
         <div class="step-card" id="step2">
-          <div class="step-num">Stage 2 (Parallel)</div>
-          <div class="step-title">⚡ Clearance Specialists</div>
-          <div style="font-size: 0.75rem; color: var(--text-dim); margin-top: 0.35rem;">Names, Brands, & Title Investigations</div>
+          <div class="step-num">Stage 2 · Parallel Fan-Out</div>
+          <div class="step-title">
+            <span class="film-reel-icon spinning">⚡</span>
+            Parallel Clearance Team
+          </div>
+          <div class="step-desc">Concurrent Name, Brand &amp; Title Investigations</div>
         </div>
         <div class="step-card" id="step3">
-          <div class="step-num">Stage 3</div>
-          <div class="step-title">🛡️ Risk Synthesizer</div>
-          <div style="font-size: 0.75rem; color: var(--text-dim); margin-top: 0.35rem;">Deduplication & E&O Underwriting Memo</div>
+          <div class="step-num">Stage 3 · Sequential</div>
+          <div class="step-title">
+            <span class="film-reel-icon">🛡️</span>
+            Risk Synthesizer Agent
+          </div>
+          <div class="step-desc">Deduplication, Deterministic Scoring &amp; E&amp;O Memo</div>
         </div>
       </div>
 
       <div class="live-log-console" id="logConsole">
-        [SYSTEM] Initializing Google ADK execution context...
+        <div class="log-line-init">[ORCHESTRATOR] Initializing Google ADK runtime context...</div>
       </div>
     </section>
 
     <!-- Final Clearance Report Panel -->
-    <section id="reportSection" class="glass-panel" style="display: none;">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+    <section id="reportSection" class="glass-panel cinematic-frame" style="display: none;">
+      <div class="frame-corner corner-tl"></div>
+      <div class="frame-corner corner-tr"></div>
+      <div class="frame-corner corner-bl"></div>
+      <div class="frame-corner corner-br"></div>
+
+      <div class="report-top-header">
         <div>
           <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
-            <div style="font-size: 0.75rem; font-weight: 700; color: var(--color-cyan); text-transform: uppercase;">
-              E&O Clearance Dossier
+            <div class="report-kicker">
+              <span>●</span> E&amp;O UNDERWRITING DOSSIER
             </div>
             <div id="reportExecutionBadge" class="execution-mode-badge live">
               <span class="pulse-dot"></span>
               <span id="reportExecutionText">⚡ Live Google ADK Multi-Agent Execution</span>
             </div>
           </div>
-          <h2 id="reportScriptTitle" style="font-size: 1.85rem; font-weight: 800; margin-top: 0.35rem;">Screenplay Title</h2>
-          <div id="reportMeta" style="font-size: 0.8rem; color: var(--text-dim); margin-top: 0.2rem;">Generated via GREENLIGHT</div>
+          <h2 id="reportScriptTitle" class="report-script-title">Screenplay Title</h2>
+          <div id="reportMeta" class="report-meta-line">Generated via GREENLIGHT Legal-Tech Engine</div>
         </div>
-        <div style="display: flex; gap: 0.75rem;">
+        <div class="report-cta-group">
           <button id="exportPdfBtn" class="btn-secondary">
             <span>📥</span> Export Clearance Memo
           </button>
@@ -134,25 +200,29 @@
       <!-- Hero Gauge & Verdict -->
       <div class="report-hero">
         <div class="gauge-box">
-          <div id="scoreGauge" class="gauge-circle red">
-            <span id="scoreVal" class="gauge-score">22</span>
-            <span class="gauge-label">Greenlight Index</span>
+          <!-- Camera Lens Aperture Ring -->
+          <div class="aperture-ring">
+            <div class="aperture-ticks"></div>
+            <div id="scoreGauge" class="gauge-circle red">
+              <span id="scoreVal" class="gauge-score">12</span>
+              <span class="gauge-label">GREENLIGHT INDEX</span>
+              <span class="gauge-sub">BASE 100 RUBRIC</span>
+            </div>
           </div>
         </div>
+
         <div class="verdict-box">
-          <div style="font-size: 0.8rem; color: var(--text-dim); text-transform: uppercase; font-weight: 700;">
-            Underwriting Assessment
-          </div>
+          <div class="verdict-pretitle">UNDERWRITING STATUS VERDICT</div>
           <div id="verdictBadge" class="verdict-badge red">
             RED FLAG - ACTION REQUIRED
           </div>
-          <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.5;">
-            Unresolved high-severity legal liabilities detected. Commercial distribution E&O insurance underwriters will reject policy binding until character renaming and brand remediation are confirmed.
+          <p id="verdictExplanation" class="verdict-explanation-text">
+            Unresolved high-severity legal liabilities detected. Commercial distribution E&amp;O insurance underwriters will reject policy binding until character renaming and brand remediation are confirmed.
           </p>
 
           <div class="stat-grid">
             <div class="stat-card">
-              <div id="statTotalFlags" class="stat-value">4</div>
+              <div id="statTotalFlags" class="stat-value">5</div>
               <div class="stat-label">Total Flags</div>
             </div>
             <div class="stat-card">
@@ -160,7 +230,7 @@
               <div class="stat-label">High Severity</div>
             </div>
             <div class="stat-card">
-              <div id="statMed" class="stat-value" style="color: var(--color-amber);">0</div>
+              <div id="statMed" class="stat-value" style="color: var(--color-amber);">1</div>
               <div class="stat-label">Medium Severity</div>
             </div>
             <div class="stat-card">
@@ -172,7 +242,7 @@
               <div class="stat-label">Turnaround Saved</div>
             </div>
             <div class="stat-card">
-              <div id="statDuration" class="stat-value" style="color: #60A5FA;">~60s</div>
+              <div id="statDuration" class="stat-value" style="color: #38BDF8;">48.0s</div>
               <div class="stat-label">Parallel Runtime</div>
             </div>
           </div>
@@ -180,10 +250,11 @@
       </div>
 
       <!-- Underwriting Memorandum -->
-      <div>
-        <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 0.75rem;">
-          Executive Clearance Memorandum
-        </h3>
+      <div class="memo-container">
+        <div class="memo-header">
+          <span class="memo-badge">OFFICIAL MEMO</span>
+          <h3 class="memo-title">Executive Clearance &amp; E&amp;O Underwriting Memorandum</h3>
+        </div>
         <div id="underwritingMemo" class="memo-section"></div>
       </div>
 
@@ -191,13 +262,13 @@
       <div class="filter-tabs">
         <button class="filter-tab active" data-category="ALL">All Clearance Flags (<span id="countAll">0</span>)</button>
         <button class="filter-tab" data-category="NAME">Character Names (<span id="countNames">0</span>)</button>
-        <button class="filter-tab" data-category="BRAND">Brands & Products (<span id="countBrands">0</span>)</button>
-        <button class="filter-tab" data-category="TITLE">Titles & Works (<span id="countTitles">0</span>)</button>
-        <button class="filter-tab" data-category="PROP">Props & Privacy (<span id="countProps">0</span>)</button>
+        <button class="filter-tab" data-category="BRAND">Brands &amp; Products (<span id="countBrands">0</span>)</button>
+        <button class="filter-tab" data-category="TITLE">Titles &amp; Works (<span id="countTitles">0</span>)</button>
+        <button class="filter-tab" data-category="PROP">Props &amp; Privacy (<span id="countProps">0</span>)</button>
       </div>
 
       <!-- Risk Items Container -->
-      <div id="riskItemsList"></div>
+      <div id="riskItemsList" class="risk-items-grid"></div>
 
     </section>
 

@@ -11,23 +11,34 @@ from tools.script_tools import extract_text_from_pdf, clean_screenplay_text
 
 router = APIRouter(prefix="/api")
 
-SAMPLE_SCRIPT_PATH = os.path.join(
+SAMPLE_DIR = os.path.join(
     os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-    "docs", "sample_scripts", "landmine_script.txt"
+    "docs", "sample_scripts"
 )
+SAMPLE_SCRIPT_PATH = os.path.join(SAMPLE_DIR, "landmine_script.txt")
 
 
 @router.get("/sample")
-async def get_sample_script():
-    """Returns the sample screenplay with deliberate clearance landmines for demo testing."""
-    if os.path.exists(SAMPLE_SCRIPT_PATH):
-        with open(SAMPLE_SCRIPT_PATH, "r", encoding="utf-8") as f:
-            content = f.read()
-            return {"title": "THE APPRENTICE'S REVENGE", "script_text": content}
-    return {
-        "title": "SAMPLE SCRIPT",
-        "script_text": "SCENE 1 - INT. OFFICE - DAY\nJULIAN enters..."
+async def get_sample_script(preset: str = "flagship"):
+    """Returns a sample screenplay benchmark preset for demo testing."""
+    filename_map = {
+        "flagship": ("landmine_script.txt", "THE APPRENTICE'S REVENGE"),
+        "common": ("common_name_script.txt", "BLUEPRINT FOR AUTUMN"),
+        "common_name": ("common_name_script.txt", "BLUEPRINT FOR AUTUMN"),
+        "clean": ("clean_control_script.txt", "WHISPERS OF THE MEADOW"),
+        "clean_control": ("clean_control_script.txt", "WHISPERS OF THE MEADOW"),
     }
+    fname, title = filename_map.get(preset.lower(), ("landmine_script.txt", "THE APPRENTICE'S REVENGE"))
+    target_path = os.path.join(SAMPLE_DIR, fname)
+    if os.path.exists(target_path):
+        with open(target_path, "r", encoding="utf-8") as f:
+            content = f.read()
+            return {"title": title, "script_text": content}
+    return {
+        "title": title,
+        "script_text": "TITLE: SAMPLE SCRIPT\n\nSCENE 1 - INT. STUDIO - DAY\nClearance demo script."
+    }
+
 
 
 MAX_FILE_SIZE = 10 * 1024 * 1024  # 10 MB

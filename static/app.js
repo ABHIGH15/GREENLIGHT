@@ -4,6 +4,136 @@ let activeCategoryFilter = "ALL";
 let selectedFile = null;
 let auditStartTime = null;
 let timerInterval = null;
+let currentPresetKey = "flagship";
+
+const PRESET_SCRIPTS = {
+  flagship: {
+    id: "btnPresetFlagship",
+    name: "The Apprentice's Revenge",
+    badge: "⚡ Flagship Landmine Demo",
+    note: "4 Clearance Landmines: Title collision, Glock 19 gun violence, Rolex watch, and unauthorized (415) 555-0250 phone number",
+    text: `TITLE: THE APPRENTICE'S REVENGE
+
+WRITTEN BY: ANONYMOUS PRODUCER
+
+LOGLINE: A disgraced Silicon Valley biotech executive launches a covert corporate sabotage campaign against former partners, using autonomous drone swarms to blackmail Fortune 500 board members in San Francisco.
+
+========================================================================
+
+SCENE 1 - EXT. MISSION BAY TECH DISTRICT - DAY
+
+A gleaming glass-and-steel skyscraper rises over the San Francisco waterfront. A bold neon emblem reads: "NEXODYNE GENOMICS - GLOBAL RESEARCH CENTER".
+
+A sleek matte-black luxury electric sports sedan pulls aggressively into the VIP drop-off lane. The vehicle's autonomous guidance system violently GLITCHES, accelerating unexpectedly into the revolving glass doors. 
+
+Glass SHATTERS across the granite courtyard. Commuters SCREAM.
+
+The driver side door swings open. Out steps JULIAN DRAKE (40s), bespoke charcoal suit, Rolex Submariner on his wrist, knuckles grazed with blood.
+
+JULIAN
+(muttering to his smartwatch)
+Tell me the autonomous guidance column didn't override again. That's two sensor failures this month. If our firmware leaks to the press, our NASDAQ valuation evaporates before Monday.
+
+SCENE 2 - INT. BIOMEDICAL LAB - CONTINUOUS
+
+Julian kicks open the reinforced security doors. He storms past rows of stainless steel bioreactor pods.
+
+At the central terminal stands DR. VALEN MERCER (50s), chief scientific founder turned rogue biotech executive. He is feverishly pipetting glowing blue synthetic peptides into refrigerated cryogenic vials.
+
+JULIAN
+Valen! The patent assignment papers were supposed to be filed with the USPTO yesterday.
+
+VALEN
+The FDA sent a preliminary inspection notice this morning, Julian. The Phase II trial cohort in Zurich developed acute toxicity. 
+
+JULIAN
+Then pull the clinical dossiers and seal the archives! If the underwriters at Chubb or Lloyd's get a look at those adverse reaction tables, our Series B bridge loan is dead in the water.
+
+Valen grabs a bottle of PERRIER SPARKLING WATER from the lab bench, takes a slow drink, and places the bottle beside an autoclave.
+
+VALEN
+You think this is about financing? If you want to renegotiate the IP split, call my direct private line at (415) 555-0250. Or come by my private research retreat at 404 Skyline Crest Way, Suite 800. But don't threaten me in my own laboratory.
+
+JULIAN
+(pulling a GLOCK 19 pistol from his jacket)
+You won't leave this cleanroom alive without those cryptographic master keys, Valen.
+
+VALEN
+(smirks, tapping his chest)
+Go ahead. My telemetry monitor is tethered to a private cloud instance. The moment my vitals flatline, the raw trial data automatically broadcasts to the SEC, the Wall Street Journal, and federal investigators.
+
+JULIAN
+You bluffing bastard.
+
+Julian raises the weapon.
+
+FADE TO BLACK.`
+  },
+  common: {
+    id: "btnPresetCommon",
+    name: "Blueprint for Autumn",
+    badge: "👤 Common Name Control",
+    note: "False-Positive Control: David Miller (Generic architect in Denver — verifies pipeline avoids indiscriminate name flagging, Score: 97/100)",
+    text: `TITLE: BLUEPRINT FOR AUTUMN
+
+LOGLINE: An architect designs an urban community park in Denver.
+
+SCENE 1 - INT. ARCHITECTURAL STUDIO - DAY
+DAVID MILLER drafts blueprints at a cedar drafting desk.
+He checks measurements with a wooden T-square.
+
+DAVID
+The botanical atrium opens to the courtyard on the east wing.
+
+He rolls up the blueprint and heads out to the site inspection.`
+  },
+  clean: {
+    id: "btnPresetClean",
+    name: "Whispers of the Meadow",
+    badge: "🌿 Clean Control Script",
+    note: "Clean Benchmark: Elena Thorne (Fictional rustic astronomer — verifies 95+ Greenlight score and 0 clearance flags)",
+    text: `TITLE: WHISPERS OF THE MEADOW
+
+LOGLINE: An astronomer seeks solitude in the Pacific Northwest mountains.
+
+SCENE 1 - EXT. MEADOW - DAWN
+A gentle morning breeze stirs the high mountain grass.
+ELENA THORNE, an observational astronomer in her 40s, adjusts a brass optical telescope.
+
+SCENE 2 - INT. CABIN - NIGHT
+Elena pours hot herbal tea from a ceramic kettle into a mug.
+She studies handwritten stellar coordinate charts beneath a kerosene lamp.
+
+ELENA
+(whispering to herself)
+The constellation has shifted.`
+  }
+};
+
+function selectPreset(key) {
+  const preset = PRESET_SCRIPTS[key];
+  if (!preset) return;
+  currentPresetKey = key;
+
+  document.querySelectorAll(".preset-pill").forEach(btn => btn.classList.remove("active"));
+  const activeBtn = document.getElementById(preset.id);
+  if (activeBtn) activeBtn.classList.add("active");
+
+  const scriptInput = document.getElementById("scriptInput");
+  if (scriptInput) scriptInput.value = preset.text;
+  selectedFile = null;
+
+  const dropZone = document.getElementById("dropZone");
+  if (dropZone) {
+    const icon = dropZone.querySelector(".upload-icon");
+    const titleDiv = dropZone.querySelector("div:nth-child(3)");
+    const subDiv = dropZone.querySelector("div:nth-child(4)");
+    if (icon) icon.textContent = key === "flagship" ? "⚡" : (key === "common" ? "👤" : "🌿");
+    if (titleDiv) titleDiv.textContent = `${preset.badge}: "${preset.name}"`;
+    if (subDiv) subDiv.textContent = preset.note;
+  }
+}
+
 
 function startLiveTimer() {
   auditStartTime = Date.now();
@@ -38,6 +168,18 @@ document.addEventListener("DOMContentLoaded", () => {
   const exportPdfBtn = document.getElementById("exportPdfBtn");
   const newScanBtn = document.getElementById("newScanBtn");
 
+  // Wire Preset Benchmark Buttons
+  const btnFlagship = document.getElementById("btnPresetFlagship");
+  const btnCommon = document.getElementById("btnPresetCommon");
+  const btnClean = document.getElementById("btnPresetClean");
+
+  if (btnFlagship) btnFlagship.addEventListener("click", () => selectPreset("flagship"));
+  if (btnCommon) btnCommon.addEventListener("click", () => selectPreset("common"));
+  if (btnClean) btnClean.addEventListener("click", () => selectPreset("clean"));
+
+  // Default to Flagship Landmine script on initialization
+  selectPreset("flagship");
+
   // File Upload / Drag & Drop
   dropZone.addEventListener("click", () => fileInput.click());
   fileInput.addEventListener("change", (e) => {
@@ -65,9 +207,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function handleFileSelected(file) {
     selectedFile = file;
-    dropZone.querySelector(".upload-icon").textContent = "✅";
-    dropZone.querySelector("div:nth-child(2)").textContent = `Loaded file: ${file.name}`;
-    dropZone.querySelector("div:nth-child(3)").textContent = `${(file.size / 1024).toFixed(1)} KB — ready to scan`;
+    document.querySelectorAll(".preset-pill").forEach(btn => btn.classList.remove("active"));
+    const icon = dropZone.querySelector(".upload-icon");
+    const titleDiv = dropZone.querySelector("div:nth-child(3)");
+    const subDiv = dropZone.querySelector("div:nth-child(4)");
+    if (icon) icon.textContent = "✅";
+    if (titleDiv) titleDiv.textContent = `Loaded file: ${file.name}`;
+    if (subDiv) subDiv.textContent = `${(file.size / 1024).toFixed(1)} KB — ready for optical clearance scan`;
     
     // If it's a text file, preview in textarea
     if (file.type.includes("text") || file.name.endsWith(".txt")) {
@@ -79,26 +225,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Load Landmine Test Script
-  loadSampleBtn.addEventListener("click", async () => {
-    try {
-      loadSampleBtn.disabled = true;
-      loadSampleBtn.textContent = "Loading...";
-      const res = await fetch("/api/sample");
-      const data = await res.json();
-      scriptInput.value = data.script_text;
-      selectedFile = null;
-      dropZone.querySelector(".upload-icon").textContent = "⚡";
-      dropZone.querySelector("div:nth-child(2)").textContent = "Landmine Test Screenplay Loaded";
-      dropZone.querySelector("div:nth-child(3)").textContent = "Features deliberate character, trademark, and title collisions";
-    } catch (err) {
-      console.error("Failed to load sample script:", err);
-      alert("Failed to load sample script.");
-    } finally {
-      loadSampleBtn.disabled = false;
-      loadSampleBtn.innerHTML = "<span>⚡</span> Load Landmine Demo Script";
-    }
-  });
+  // Reload Selected Preset Button
+  if (loadSampleBtn) {
+    loadSampleBtn.addEventListener("click", () => {
+      selectPreset(currentPresetKey);
+    });
+  }
 
   // Run Audit Button
   runAuditBtn.addEventListener("click", async () => {
@@ -317,17 +449,27 @@ async function fetchAndRenderReport(analysisId) {
 
     scoreGauge.className = "gauge-circle";
     const verdictBadge = document.getElementById("verdictBadge");
+    const verdictExplanation = document.getElementById("verdictExplanation");
     verdictBadge.textContent = report.verdict;
 
     if (report.greenlight_score >= 85) {
       scoreGauge.classList.add("green");
       verdictBadge.className = "verdict-badge green";
+      if (verdictExplanation) {
+        verdictExplanation.textContent = "Screenplay meets or exceeds all industry E&O clearance underwriting standards. No unresolved high-severity trademark, defamation, or title conflicts detected. Cleared for principal photography binding.";
+      }
     } else if (report.greenlight_score >= 50) {
       scoreGauge.classList.add("amber");
       verdictBadge.className = "verdict-badge amber";
+      if (verdictExplanation) {
+        verdictExplanation.textContent = "Screenplay contains moderate clearance questions or a single resolvable conflict. Underwriters will require standard art department greeking clearance or indemnification warranties before policy binding.";
+      }
     } else {
       scoreGauge.classList.add("red");
       verdictBadge.className = "verdict-badge red";
+      if (verdictExplanation) {
+        verdictExplanation.textContent = "Critical legal exposure detected. Commercial distribution E&O insurance underwriters will decline policy binding until character renaming, weapon/trademark disclaimers, and title conflicts are resolved.";
+      }
     }
 
     // Stats
@@ -338,7 +480,7 @@ async function fetchAndRenderReport(analysisId) {
     document.getElementById("statSaved").textContent = report.stats.turnaround_saved || "5–10d";
     const durElem = document.getElementById("statDuration");
     if (durElem) {
-      durElem.textContent = elapsedSecs ? `${elapsedSecs}s` : "58.4s";
+      durElem.textContent = elapsedSecs ? `${elapsedSecs}s` : "48.0s";
     }
 
     // Tab counts
@@ -374,13 +516,14 @@ function renderRiskCards() {
   });
 
   if (filtered.length === 0) {
-    container.innerHTML = `<div style="text-align: center; color: var(--text-dim); padding: 2rem;">No clearance risks in this category.</div>`;
+    container.innerHTML = `<div style="text-align: center; color: var(--text-muted); padding: 3rem; font-family: var(--font-mono); font-size: 0.95rem;">✅ No clearance risks detected in this category.</div>`;
     return;
   }
 
-  filtered.forEach(item => {
+  filtered.forEach((item, index) => {
     const card = document.createElement("div");
     card.className = "risk-card";
+    card.style.setProperty("--i", index);
 
     let sourcesHtml = "";
     if (item.sources && item.sources.length > 0) {
@@ -389,13 +532,36 @@ function renderRiskCards() {
           <div class="sources-title">
             <span>🌐</span> Parallel Web Grounding Citations
           </div>
-          ${item.sources.map(s => `
-            <div class="source-item">
-              <div style="font-weight: 600;">${escapeHtml(s.title)}</div>
-              <a href="${s.url}" target="_blank" rel="noopener" class="source-link">${s.url}</a>
-              ${s.snippet ? `<div style="color: var(--text-muted); font-size: 0.8rem; margin-top: 0.25rem;">"${escapeHtml(s.snippet)}"</div>` : ''}
-            </div>
-          `).join('')}
+          ${item.sources.map(s => {
+            let domain = "";
+            try {
+              domain = new URL(s.url).hostname.replace("www.", "");
+            } catch {
+              domain = "source";
+            }
+            return `
+              <div class="source-item">
+                <div style="font-weight: 600; color: #E2E8F0;">
+                  <span style="font-family: var(--font-mono); font-size: 0.72rem; padding: 0.15rem 0.45rem; background: rgba(0,210,255,0.1); border-radius: 4px; color: var(--color-cyan); margin-right: 0.35rem;">${escapeHtml(domain)}</span>
+                  ${escapeHtml(s.title)}
+                </div>
+                <a href="${s.url}" target="_blank" rel="noopener" class="source-link">${s.url}</a>
+                ${s.snippet ? `<div style="color: var(--text-muted); font-size: 0.8rem; margin-top: 0.3rem; border-left: 2px solid rgba(255,255,255,0.15); padding-left: 0.5rem; font-style: italic;">"${escapeHtml(s.snippet)}"</div>` : ''}
+              </div>
+            `;
+          }).join('')}
+        </div>
+      `;
+    }
+
+    let greekingHtml = "";
+    const actionLower = (item.recommended_action || "").toLowerCase();
+    const isBrandOrProp = item.category === "BRAND" || item.category === "PROP";
+    if (isBrandOrProp || actionLower.includes("greek") || actionLower.includes("fictional") || actionLower.includes("re-badge") || actionLower.includes("555-0142")) {
+      greekingHtml = `
+        <div class="greeking-callout">
+          <span>🎨</span>
+          <div><strong>Art Department / Prop Advisory:</strong> Fictionalize on-screen prop badging, swap in legal-safe phone number, or obtain signed manufacturer release prior to production.</div>
         </div>
       `;
     }
@@ -404,7 +570,7 @@ function renderRiskCards() {
       <div class="risk-header">
         <div>
           <div class="risk-entity">${escapeHtml(item.entity)}</div>
-          <div class="risk-scene">${escapeHtml(item.scene_or_page || 'General Reference')} | Ref: ${item.id}</div>
+          <div class="risk-scene">${escapeHtml(item.scene_or_page || 'General Reference')} · Ref ID: ${escapeHtml(item.id)}</div>
         </div>
         <span class="badge-severity ${item.severity}">${item.severity} SEVERITY</span>
       </div>
@@ -414,6 +580,7 @@ function renderRiskCards() {
         <div class="action-title">Producer Remediation Action</div>
         <div>${escapeHtml(item.recommended_action)}</div>
       </div>
+      ${greekingHtml}
     `;
 
     container.appendChild(card);

@@ -1,0 +1,23 @@
+Before filming begins, production counsel must secure Errors and Omissions insurance. Vetting a screenplay for trademark dilution, character defamation, and title collisions traditionally takes 5 to 10 business days — and one missed landmine halts financing or triggers costly litigation.
+
+This is Greenlight — an autonomous pre-production clearance copilot built for the Google Cloud Blockbuster Hackathon. Powered by the Google Agent Development Kit and Parallel's Search M-C-P, Greenlight turns that multi-day bottleneck into an auditable clearance dossier in under a minute.
+
+Let's run a live audit on an encumbered script: The Apprentice's Revenge. It features an encumbered title, a real firearm in a crime scene, a luxury watch, and an unreserved dialogue phone number.
+
+Under the hood, Stage 1 uses Google A-D-K's Sequential Agent to parse entities. Stage 2 fans out three specialist agents concurrently with A-D-K's Parallel Agent — Title, Brand, and Character clearance — each querying live trademark filings, Wikipedia, and news registries in real time via Parallel's Search M-C-P.
+
+In seconds, the clearance team surfaces four real exposures.
+
+Title Clearance flags a HIGH reverse-confusion risk under Lanham Act Section 43-A, citing the 2024 film The Apprentice, and suggests pre-cleared alternative titles.
+
+Brand Clearance catches two issues: a Glock 19 in a criminal assault — trademark tarnishment under Lanham Act Section 43-C — and a Rolex Submariner in unlicensed hero placement. For the firearm, Greenlight pulls a vetted fictional replacement straight from its greeking catalog, giving art departments a usable alternative.
+
+Prop Clearance inspects the dialogue phone number: four one five, five five five, zero two five zero, and catches that it falls outside the federally reserved fictional block — the difference between a safe prop and a real subscriber line.
+
+Crucially, Greenlight also avoids false alarms. Character Clearance screens protagonist Julian Drake under the Restatement Second of Torts, finds zero living collisions, and affirmatively clears the name. A tool that flags everything is useless — Greenlight knows the difference.
+
+To keep scoring auditable rather than an L-L-M guess, Greenlight computes risk with a fixed formula: 100, minus 25 per high-severity flag, 10 per medium, 3 per low. Anyone can verify the math against the flags.
+
+One click on Export Clearance Memo generates an institutional insurance memo formatted with underlying case law, ready for an insurer's review.
+
+Greenlight combines Google A-D-K multi-agent orchestration, Gemini, and Parallel's Search M-C-P to deliver fast, source-cited legal triage — making human clearance faster, not replacing it. Thank you.
