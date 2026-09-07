@@ -126,8 +126,8 @@ function selectPreset(key) {
   const dropZone = document.getElementById("dropZone");
   if (dropZone) {
     const icon = dropZone.querySelector(".upload-icon");
-    const titleDiv = dropZone.querySelector("div:nth-child(3)");
-    const subDiv = dropZone.querySelector("div:nth-child(4)");
+    const titleDiv = dropZone.querySelector(".drop-primary-text") || dropZone.querySelector("div:nth-child(2)");
+    const subDiv = dropZone.querySelector(".drop-sub-text") || dropZone.querySelector("div:nth-child(3)");
     if (icon) icon.textContent = key === "flagship" ? "⚡" : (key === "common" ? "👤" : "🌿");
     if (titleDiv) titleDiv.textContent = `${preset.badge}: "${preset.name}"`;
     if (subDiv) subDiv.textContent = preset.note;
@@ -209,8 +209,8 @@ document.addEventListener("DOMContentLoaded", () => {
     selectedFile = file;
     document.querySelectorAll(".preset-pill").forEach(btn => btn.classList.remove("active"));
     const icon = dropZone.querySelector(".upload-icon");
-    const titleDiv = dropZone.querySelector("div:nth-child(3)");
-    const subDiv = dropZone.querySelector("div:nth-child(4)");
+    const titleDiv = dropZone.querySelector(".drop-primary-text") || dropZone.querySelector("div:nth-child(2)");
+    const subDiv = dropZone.querySelector(".drop-sub-text") || dropZone.querySelector("div:nth-child(3)");
     if (icon) icon.textContent = "✅";
     if (titleDiv) titleDiv.textContent = `Loaded file: ${file.name}`;
     if (subDiv) subDiv.textContent = `${(file.size / 1024).toFixed(1)} KB — ready for optical clearance scan`;
@@ -224,6 +224,38 @@ document.addEventListener("DOMContentLoaded", () => {
       reader.readAsText(file);
     }
   }
+
+  // Theme Switcher (Daylight / Darkroom)
+  const themeToggleBtn = document.getElementById("themeToggleBtn");
+  const themeIcon = document.getElementById("themeIcon");
+  const themeLabel = document.getElementById("themeLabel");
+
+  function initTheme() {
+    const saved = localStorage.getItem("greenlight_theme") || "daylight";
+    applyTheme(saved);
+  }
+
+  function applyTheme(theme) {
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("greenlight_theme", theme);
+    if (theme === "darkroom") {
+      if (themeIcon) themeIcon.textContent = "☀️";
+      if (themeLabel) themeLabel.textContent = "Studio Daylight";
+    } else {
+      if (themeIcon) themeIcon.textContent = "🌙";
+      if (themeLabel) themeLabel.textContent = "Darkroom Suite";
+    }
+  }
+
+  if (themeToggleBtn) {
+    themeToggleBtn.addEventListener("click", () => {
+      const current = document.documentElement.getAttribute("data-theme") || "daylight";
+      const next = current === "daylight" ? "darkroom" : "daylight";
+      applyTheme(next);
+    });
+  }
+
+  initTheme();
 
   // Reload Selected Preset Button
   if (loadSampleBtn) {
@@ -263,7 +295,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Filter Tabs
   document.querySelectorAll(".filter-tab").forEach(tab => {
-    tab.addEventListener("click", (e) => {
+    tab.addEventListener("click", () => {
       document.querySelectorAll(".filter-tab").forEach(t => t.classList.remove("active"));
       tab.classList.add("active");
       activeCategoryFilter = tab.getAttribute("data-category");
@@ -453,20 +485,20 @@ async function fetchAndRenderReport(analysisId) {
     verdictBadge.textContent = report.verdict;
 
     if (report.greenlight_score >= 85) {
-      scoreGauge.classList.add("green");
-      verdictBadge.className = "verdict-badge green";
+      scoreGauge.className = "gauge-circle green";
+      verdictBadge.className = "rubber-stamp green";
       if (verdictExplanation) {
         verdictExplanation.textContent = "Screenplay meets or exceeds all industry E&O clearance underwriting standards. No unresolved high-severity trademark, defamation, or title conflicts detected. Cleared for principal photography binding.";
       }
     } else if (report.greenlight_score >= 50) {
-      scoreGauge.classList.add("amber");
-      verdictBadge.className = "verdict-badge amber";
+      scoreGauge.className = "gauge-circle amber";
+      verdictBadge.className = "rubber-stamp amber";
       if (verdictExplanation) {
         verdictExplanation.textContent = "Screenplay contains moderate clearance questions or a single resolvable conflict. Underwriters will require standard art department greeking clearance or indemnification warranties before policy binding.";
       }
     } else {
-      scoreGauge.classList.add("red");
-      verdictBadge.className = "verdict-badge red";
+      scoreGauge.className = "gauge-circle red";
+      verdictBadge.className = "rubber-stamp red";
       if (verdictExplanation) {
         verdictExplanation.textContent = "Critical legal exposure detected. Commercial distribution E&O insurance underwriters will decline policy binding until character renaming, weapon/trademark disclaimers, and title conflicts are resolved.";
       }
