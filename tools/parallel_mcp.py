@@ -119,8 +119,7 @@ class DirectParallelSearcher:
         payload = {
             "objective": objective,
             "search_queries": search_queries[:4],
-            "mode": "fast",
-            "max_results": max_results
+            "mode": "fast"
         }
         
         try:
@@ -136,7 +135,7 @@ class DirectParallelSearcher:
                             "excerpts": r.get("excerpts", []),
                             "publish_date": r.get("publish_date", "")
                         }
-                        for r in results
+                        for r in results[:max_results]
                     ]
                 else:
                     logger.warning(f"Parallel search returned HTTP {resp.status_code}: {resp.text}")

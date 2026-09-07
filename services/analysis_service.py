@@ -79,7 +79,7 @@ class AnalysisService:
                 total_stages=3,
                 message="📄 Extracting characters, brands, titles, and real-world entities from screenplay text..."
             ))
-            await asyncio.sleep(1.2)
+            await asyncio.sleep(0.05)
 
             # STAGE 2: PARALLEL CLEARANCE AGENTS
             await self.emit_event(PipelineStatusEvent(
@@ -91,7 +91,7 @@ class AnalysisService:
             ))
 
             # Emit sub-agent updates
-            await asyncio.sleep(1.0)
+            await asyncio.sleep(0.05)
             await self.emit_event(PipelineStatusEvent(
                 analysis_id=analysis_id,
                 stage="Name Clearance",
@@ -99,7 +99,7 @@ class AnalysisService:
                 total_stages=3,
                 message="👤 [Name Clearance Agent] Querying living public figures and defamation risks..."
             ))
-            await asyncio.sleep(1.0)
+            await asyncio.sleep(0.05)
             await self.emit_event(PipelineStatusEvent(
                 analysis_id=analysis_id,
                 stage="Brand Clearance",
@@ -107,7 +107,7 @@ class AnalysisService:
                 total_stages=3,
                 message="🏷️ [Brand Clearance Agent] Investigating trademark dilution and product tarnishment..."
             ))
-            await asyncio.sleep(1.0)
+            await asyncio.sleep(0.05)
             await self.emit_event(PipelineStatusEvent(
                 analysis_id=analysis_id,
                 stage="Title Clearance",
@@ -115,7 +115,7 @@ class AnalysisService:
                 total_stages=3,
                 message="🎬 [Title Clearance Agent] Searching MPAA registry and registered theatrical titles..."
             ))
-            await asyncio.sleep(1.2)
+            await asyncio.sleep(0.05)
 
             # STAGE 3: SYNTHESIS & REPORT GENERATION
             await self.emit_event(PipelineStatusEvent(
