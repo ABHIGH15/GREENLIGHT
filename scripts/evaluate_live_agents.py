@@ -101,6 +101,21 @@ SCENE 1 - EXT. COLISEUM ARENA - DAY
 A lone gladiator stands in the dust before screaming crowds as the emperor signals death.
 """
 
+# SCRIPT 6: False-Positive Control (Common Name with No Identifying Real-World Traits)
+SCRIPT_COMMON_NAME_CONTROL = """TITLE: BLUEPRINT FOR AUTUMN
+
+LOGLINE: An architect designs an urban community park in Denver.
+
+SCENE 1 - INT. ARCHITECTURAL STUDIO - DAY
+DAVID MILLER drafts blueprints at a cedar drafting desk.
+He checks measurements with a wooden T-square.
+
+DAVID
+The botanical atrium opens to the courtyard on the east wing.
+
+He rolls up the blueprint and heads out to the site inspection.
+"""
+
 
 async def run_live_script_eval(service: AnalysisService, script_text: str, title: str, label: str):
     print(f"\n{'='*70}")
@@ -153,7 +168,7 @@ async def main():
     parser = argparse.ArgumentParser(description="Run live agentic clearance evaluations")
     parser.add_argument(
         "--target",
-        choices=["all", "flagship", "clean", "name", "brand", "title", "seeded"],
+        choices=["all", "flagship", "clean", "name", "brand", "title", "seeded", "common"],
         default="all",
         help="Evaluation script(s) to execute (default: all)"
     )
@@ -168,7 +183,7 @@ async def main():
 
     targets_to_run = []
     if args.target == "all":
-        targets_to_run = ["flagship", "clean", "name", "brand", "title"]
+        targets_to_run = ["flagship", "clean", "name", "brand", "title", "common"]
     elif args.target == "seeded":
         targets_to_run = ["name", "brand", "title"]
     else:
@@ -203,6 +218,12 @@ async def main():
             service, SCRIPT_SEED_TITLE, "GLADIATOR: REIGN OF BLOOD", "ISOLATED TITLE COLLISION TEST"
         )
         results["title"] = (report, dur)
+
+    if "common" in targets_to_run:
+        report, dur = await run_live_script_eval(
+            service, SCRIPT_COMMON_NAME_CONTROL, "BLUEPRINT FOR AUTUMN", "COMMON NAME FALSE-POSITIVE CONTROL TEST"
+        )
+        results["common"] = (report, dur)
 
     # Summary of Empirical Results
     print(f"\n{'='*70}")
@@ -244,6 +265,11 @@ async def main():
         elif key == "title":
             title_hit = any("gladiator" in r.entity.lower() or "gladiator" in r.description.lower() for r in rep.risks if r.severity.value == "HIGH")
             print(f"   - Gladiator Franchise Conflict (HIGH): {'✅ DETECTED' if title_hit else '❌ MISSED'}")
+        elif key == "common":
+            no_high_defamation = not any(r.category.value == "NAME" and r.severity.value == "HIGH" for r in rep.risks)
+            is_greenlight = rep.verdict == "GREENLIGHT"
+            print(f"   - Common Name False-Positive Check: {'✅ ZERO HIGH-SEVERITY DEFAMATION FLAGS (David Miller properly cleared under Restatement § 564)' if no_high_defamation else '❌ OVER-FLAGGED COMMON NAME'}")
+            print(f"   - Underwriting Clearance: {'✅ GREENLIGHT' if is_greenlight else rep.verdict}")
 
     # Direct code-level algorithmic test for living public figure collision
     print(f"\n{'='*70}")

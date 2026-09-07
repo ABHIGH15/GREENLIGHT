@@ -27,50 +27,44 @@ In traditional film financing:
 
 GREENLIGHT uses Google's code-first **Agent Development Kit (ADK)** to orchestrate a deterministic `SequentialAgent` pipeline wrapping a concurrent `ParallelAgent` fan-out. The specialist agents are grounded in live web intelligence via **Parallel's hosted Model Context Protocol (MCP)** server (`search-mcp.parallel.ai/mcp`):
 
-```
-                                  ┌───────────────────────────────┐
-                                  │      Screenplay Ingestion     │
-                                  │   (PDF / Fountain / Text)     │
-                                  └──────────────┬────────────────┘
-                                                 │
-                                                 ▼
-                          ┌───────────────────────────────────────────────┐
-                          │   Stage 1: Script Parser Agent (ADK)          │
-                          │   Extracts Characters, Brands, Titles, Props  │
-                          │   Output: session.state["parsed_script"]      │
-                          └──────────────────────┬────────────────────────┘
-                                                 │
-                                                 ▼
-        ┌─────────────────────────────────────────────────────────────────────────────────┐
-        │             Stage 2: Parallel Clearance Team (ParallelAgent Fan-Out)             │
-        │                                                                                 │
-        │   ┌─────────────────────────┐ ┌─────────────────────────┐ ┌─────────────────┐   │
-        │   │  Character & Defamation │ │   Brand & Trademark     │ │ Title Collision │   │
-        │   │     Clearance Agent     │ │    Clearance Agent      │ │ Clearance Agent │   │
-        │   │ (session.state["names"])│ │(session.state["brands"])│ │(session["titles)│   │
-        │   └────────────┬────────────┘ └────────────┬────────────┘ └────────┬────────┘   │
-        └────────────────┼───────────────────────────┼───────────────────────┼────────────┘
-                         │                           │                       │
-                         └───────────────────────────┼───────────────────────┘
-                                                     │ (web_search / web_fetch)
-                                                     ▼
-                                       ┌───────────────────────────┐
-                                       │    Parallel Search MCP    │
-                                       │ search-mcp.parallel.ai/mcp│
-                                       └─────────────┬─────────────┘
-                                                     │
-                                                     ▼
-                          ┌───────────────────────────────────────────────┐
-                          │   Stage 3: Risk Synthesizer Agent (ADK)       │
-                          │   Deduplication, Deterministic Scoring (0-100)│
-                          │   and E&O Insurance Underwriting Memorandum   │
-                          └──────────────────────┬────────────────────────┘
-                                                 │
-                                                 ▼
-                          ┌───────────────────────────────────────────────┐
-                          │     Executive Clearance Suite Dashboard       │
-                          │     Interactive Interface + PDF Memo Export   │
-                          └───────────────────────────────────────────────┘
+![GREENLIGHT System Architecture](docs/architecture.svg)
+
+```mermaid
+flowchart TD
+    subgraph Ingestion["Input Ingestion"]
+        Script["Screenplay Document<br/>(PDF, FDX, Fountain, TXT)"]
+    end
+
+    subgraph Stage1["Stage 1: Entity Extraction"]
+        Parser["ScriptParserAgent (Google ADK)<br/>Extracts Characters, Brands, Titles, Phones"]
+    end
+
+    subgraph Stage2["Stage 2: Concurrent Clearance Team (ParallelAgent)"]
+        direction TB
+        NameAgent["Character Clearance Agent<br/>(Defamation & Living Public Figures)"]
+        BrandAgent["Brand & Trademark Agent<br/>(Dilution, Tarnishment, NANPA Phone Check)"]
+        TitleAgent["Title Clearance Agent<br/>(MPA TRB, Rogers v. Grimaldi)"]
+    end
+
+    subgraph External["External Grounding"]
+        ParallelMCP["Parallel Search MCP<br/>(search-mcp.parallel.ai/mcp)<br/>Justia Trademarks, Wikipedia, News, Registries"]
+    end
+
+    subgraph Stage3["Stage 3: Risk Synthesis"]
+        Synth["RiskSynthesizerAgent (Google ADK)<br/>Deterministic Scoring Engine: 100 - 25H - 10M - 3L"]
+    end
+
+    subgraph Output["Deliverable"]
+        Report["Studio Clearance Dossier<br/>E&O Underwriting Memo + PDF Export"]
+    end
+
+    Script --> Parser
+    Parser --> NameAgent & BrandAgent & TitleAgent
+    NameAgent <--> ParallelMCP
+    BrandAgent <--> ParallelMCP
+    TitleAgent <--> ParallelMCP
+    NameAgent & BrandAgent & TitleAgent --> Synth
+    Synth --> Report
 ```
 
 ### Clearance Specialist Responsibilities & Legal Grounding
@@ -99,33 +93,51 @@ To eliminate hallucinations and mental arithmetic errors inside insurance memora
 
 $$\text{Score} = \max\Big(0, \min\big(100, 100 - (25 \times \text{High}) - (10 \times \text{Medium}) - (3 \times \text{Low})\big)\Big)$$
 
-### Underwriting Thresholds:
-- **85 – 100 (`GREENLIGHT`)**: Insurable under standard E&O policy terms; zero unresolved high or medium severity risks.
-- **60 – 84 (`CONDITIONAL GREENLIGHT`)**: Policy bindable subject to specific clearance riders or script revisions.
-- **0 – 59 (`RED FLAG - ACTION REQUIRED`)**: Policy binding withheld pending mandatory character renaming, prop greeking, or title changes.
+### Underwriting Thresholds (Code-Enforced):
+- **`GREENLIGHT`** ($\text{Score} \ge 85$ and $\text{High} == 0$): Standard E&O policy bindable immediately; zero high-severity litigation exposures.
+- **`CONDITIONAL GREENLIGHT`** ($\text{Score} \ge 50$ and $\text{High} \le 1$): Policy bindable subject to specific clearance riders or script revisions.
+- **`RED FLAG - ACTION REQUIRED`** ($\text{Score} < 50$ or $\text{High} \ge 2$): Policy binding withheld pending mandatory character renaming, prop greeking, or title changes.
+
+---
+
+## Scope & Underwriting Boundaries (What GREENLIGHT Does Not Check)
+
+To maintain institutional legal integrity, GREENLIGHT explicitly defines its automated clearance boundaries:
+
+1. **Non-Literal Narrative / Plot Substantial Similarity**:
+   GREENLIGHT clears isolated entities (titles, character names, trademarks, props). Substantial similarity copyright infringement between entire literary narratives (e.g. *Nichols v. Universal Pictures Corp.*) requires holistic comparative analysis against third-party literary catalogs.
+2. **Music & Synchronization (Sync) Rights**:
+   Spoken lyrics or musical references in action lines are identified as prop citations, but statutory synchronization and master-use licensing (ASCAP, BMI, SESAC) must be cleared directly through publishers.
+3. **Physical Location & Filming Permits**:
+   Scene headings referencing real-world commercial establishments (e.g., *EXT. MONACO CASINO*) are screened for trademark and publicity issues, but do not replace municipal filming permits or private location agreements.
+4. **Guild & Union Jurisdiction**:
+   Credits determination, union minimum basic agreements (WGA, DGA, SAG-AFTRA MBA), and residual payment schedules are outside clearance scope.
+5. **Unscripted & Reality Formats**:
+   Docuseries and reality formats require executed participant appearance releases and life-story rights agreements.
 
 ---
 
 ## Empirical Benchmark Evaluation
 
 Testing is separated into two verifiable layers:
-1. **Local Regression Suite (`tests/`):** 23 automated tests running in **0.33s** verifying Soundex phonetic algorithms, direct living-figure collision matching, MPAA title fuzzy matching, Greeking catalog lookup, NANPA 555 reservation blocks, input validation, and PDF parsing.
-2. **Live Agentic Evaluation Benchmark (`scripts/evaluate_live_agents.py`):** Full end-to-end multi-agent execution invoking the live Google ADK `Runner.run_async()` against `gemini-3.5-flash-lite` and Parallel Search MCP across 5 test screenplays.
+1. **Local Regression Suite (`tests/`):** 24 automated tests running in **0.34s** verifying Soundex phonetic algorithms, direct living-figure collision matching, common-name false-positive controls, MPAA title fuzzy matching, Greeking catalog lookup, NANPA 555 reservation blocks, input validation, and PDF parsing.
+2. **Live Agentic Evaluation Benchmark (`scripts/evaluate_live_agents.py`):** Full end-to-end multi-agent execution invoking the live Google ADK `Runner.run_async()` against `gemini-3.5-flash-lite` and Parallel Search MCP across 6 test screenplays.
 
-### 5-Script Empirical Evaluation Matrix:
+### 6-Script Empirical Evaluation Matrix:
 
 | Benchmark Script | Test Category / Focus | Live Wall-Clock | Target Clearance Evaluation | Live Detection Status | Final Score & Formula | Underwriting Verdict |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **The Apprentice's Revenge** | Full Pipeline (4 Categories) | 66.2s | Title (*The Apprentice*), Glock 19, (415) 555-0250 phone, Rolex | Caught (4/4 Categories) + Julian Drake cleared | **12/100** ($100 - 3 \times 25 - 1 \times 10 - 1 \times 3$) | `RED FLAG - ACTION REQUIRED` |
+| **The Apprentice's Revenge** | Full Pipeline (4 Categories) | 48.0s | Title (*The Apprentice*), Glock 19, (415) 555-0250 phone, Rolex | Caught (4/4 Categories) + Julian Drake cleared | **12/100** ($100 - 3 \times 25 - 1 \times 10 - 1 \times 3$) | `RED FLAG - ACTION REQUIRED` |
 | **Whispers of the Meadow** | Clean Control Script | 60.0s | Unbranded rustic set, fictional astronomer | 0 False Positives (0 High, 0 Med) | **88/100** ($100 - 4 \times 3$) | `GREENLIGHT` |
 | **Silicon Shadows** | Fictional Character Clearance | 54.0s | Fictional CEO Lucian Cross in corporate crime scene | Affirmatively Cleared (LOW) + Direct living figure test passes (HIGH) | **91/100** ($100 - 3 \times 3$) | `GREENLIGHT` |
 | **Protocol of Shadows** | Greeked Brand Malfunction | 69.0s | Fictional Castiglione GT battery explosion | Zero Real Trademarks Disparaged (Greeking defense evaluated) | **62/100** ($100 - 1 \times 25 - 1 \times 10 - 1 \times 3$) | `CONDITIONAL GREENLIGHT` |
 | **Gladiator: Reign of Blood** | Isolated Title Collision | 42.0s | Franchise collision with *Gladiator* (2000/2024) | Caught (HIGH) (Lanham Act § 43(a) / TRB) | **72/100** ($100 - 1 \times 25 - 1 \times 3$) | `CONDITIONAL GREENLIGHT` |
+| **Blueprint for Autumn** | Common Name Control | 42.0s | Generic architect *David Miller* | Cleared Cleanly (0 High, 0 Med) under Restatement § 564 | **97/100** ($100 - 1 \times 3$) | `GREENLIGHT` |
 
 ### Key Benchmark Metrics:
 - **100% Detection Rate:** All intentional clearance targets (theatrical title collisions, weapon tarnishment, non-reserved phone numbers, character clearances, and greeked prop evaluations) were correctly identified with verifiable legal citations.
-- **0% False High/Medium Alarms:** On clean, unencumbered material (*Whispers of the Meadow*), the pipeline issued zero false alarms, awarding an affirmative underwriting greenlight (88/100).
-- **100% Deterministic Scoring Auditability:** Scores strictly adhere to the mathematical formula across all runs.
+- **0% False High/Medium Alarms:** On clean, unencumbered material (*Whispers of the Meadow*) and generic names (*Blueprint for Autumn*), the pipeline issued zero false alarms, awarding affirmative underwriting greenlights (88/100 and 97/100).
+- **100% Deterministic Scoring Auditability:** Scores strictly adhere to the code-enforced mathematical formula across all runs.
 - **Pacing & Throughput:** Wall-clock completion across 6–8 concurrent live agent calls ranged between **42.0s and 69.0s**, adhering to the 15 RPM free tier rate limit.
 
 ---

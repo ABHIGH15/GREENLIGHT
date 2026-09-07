@@ -113,7 +113,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Export PDF Button
   exportPdfBtn.addEventListener("click", () => {
+    const prevFilter = activeCategoryFilter;
+    activeCategoryFilter = "ALL";
+    renderRiskCards();
     window.print();
+    activeCategoryFilter = prevFilter;
+    renderRiskCards();
   });
 
   // New Scan Button

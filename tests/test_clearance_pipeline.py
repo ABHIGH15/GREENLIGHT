@@ -46,6 +46,17 @@ class TestClearanceTools(unittest.TestCase):
         self.assertEqual(clean_res["phonetic_risk"], "LOW")
         self.assertLess(clean_res["similarity_score"], 0.35)
 
+    def test_common_name_false_positive_control(self):
+        """False-positive control: ultra-common names with no unique identifying traits must clear as LOW."""
+        common_names = ["David Miller", "Sarah Jenkins", "Michael Smith"]
+        known_figures = ["Gabriel Sterling", "Donald Trump", "Elon Musk"]
+        
+        for name in common_names:
+            for figure in known_figures:
+                sim = check_name_phonetic_similarity(name, figure)
+                self.assertEqual(sim["phonetic_risk"], "LOW", f"{name} vs {figure} should not trigger phonetic risk")
+                self.assertLess(sim["similarity_score"], 0.45)
+
     def test_suggest_greeking_alternatives(self):
         # Firearms
         res = suggest_greeking_alternatives("firearms_tactical", "Glock 19")

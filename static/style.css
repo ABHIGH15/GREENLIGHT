@@ -592,23 +592,114 @@ body {
   border-color: #334155;
 }
 
-/* Print/Export Styling */
+/* Print / PDF Export Styling */
 @media print {
-  body {
-    background: white !important;
-    color: black !important;
+  @page {
+    margin: 15mm 20mm;
+    size: letter portrait;
   }
-  .studio-navbar, .button-row, .filter-tabs, .btn-primary, .btn-secondary {
+  body {
+    background: #FFFFFF !important;
+    color: #0F172A !important;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+  }
+  .studio-navbar, .button-row, .filter-tabs, .btn-primary, .btn-secondary, #uploadSection, #progressSection {
     display: none !important;
+  }
+  #reportSection {
+    display: block !important;
+    padding: 0 !important;
   }
   .glass-panel {
     border: none !important;
     box-shadow: none !important;
+    background: #FFFFFF !important;
     padding: 0 !important;
+    margin-bottom: 1.5rem !important;
+  }
+  .report-header {
+    border-bottom: 2px solid #0F172A !important;
+    padding-bottom: 1rem !important;
+    margin-bottom: 1.5rem !important;
+  }
+  .report-header h2 {
+    color: #0F172A !important;
+    font-size: 1.8rem !important;
+  }
+  .report-meta {
+    color: #475569 !important;
+  }
+  .report-hero {
+    background: #F8FAFC !important;
+    border: 1px solid #CBD5E1 !important;
+    border-radius: 8px !important;
+    padding: 1.25rem !important;
+    page-break-inside: avoid;
+  }
+  .gauge-box, .verdict-box {
+    color: #0F172A !important;
+  }
+  .gauge-score {
+    color: #0F172A !important;
+    -webkit-text-fill-color: #0F172A !important;
+  }
+  .verdict-title {
+    color: #0F172A !important;
+  }
+  .verdict-desc {
+    color: #334155 !important;
+  }
+  .stat-card {
+    background: #FFFFFF !important;
+    border: 1px solid #E2E8F0 !important;
+    border-radius: 6px !important;
+  }
+  .stat-val {
+    color: #0F172A !important;
+  }
+  .stat-label {
+    color: #475569 !important;
   }
   .risk-card {
-    border: 1px solid #ccc !important;
+    background: #FFFFFF !important;
+    border: 1px solid #CBD5E1 !important;
+    border-radius: 6px !important;
+    box-shadow: none !important;
     page-break-inside: avoid;
+    margin-bottom: 1rem !important;
+    padding: 1rem !important;
+  }
+  .risk-title {
+    color: #0F172A !important;
+  }
+  .risk-desc, .risk-recommendation {
+    color: #334155 !important;
+  }
+  .risk-source-box {
+    background: #F1F5F9 !important;
+    border: 1px solid #E2E8F0 !important;
+    color: #475569 !important;
+  }
+  .risk-source-box a {
+    color: #2563EB !important;
+    text-decoration: underline !important;
+  }
+  .memo-box {
+    background: #F8FAFC !important;
+    border: 1px solid #CBD5E1 !important;
+    color: #1E293B !important;
+    page-break-inside: avoid;
+  }
+  .memo-box pre, .memo-box p {
+    color: #1E293B !important;
+    font-family: Georgia, serif !important;
+  }
+  .execution-mode-badge {
+    border: 1px solid #059669 !important;
+    color: #065F46 !important;
+    background: #D1FAE5 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
 }
 

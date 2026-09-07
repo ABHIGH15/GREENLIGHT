@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 680" width="100%" height="100%" style="background:#090D16; border-radius:12px; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <defs>
+    <linearGradient id="primaryGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10B981" />
+      <stop offset="100%" stop-color="#059669" />
+    </linearGradient>
+    <linearGradient id="blueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3B82F6" />
+      <stop offset="100%" stop-color="#1D4ED8" />
+    </linearGradient>
+    <linearGradient id="purpleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#8B5CF6" />
+      <stop offset="100%" stop-color="#6D28D9" />
+    </linearGradient>
+    <linearGradient id="cyanGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#06B6D4" />
+      <stop offset="100%" stop-color="#0891B2" />
+    </linearGradient>
+  </defs>
+
+  <!-- Title & Header -->
+  <text x="550" y="44" text-anchor="middle" fill="#F8FAFC" font-size="22" font-weight="800" letter-spacing="1.5">GREENLIGHT SYSTEM ARCHITECTURE</text>
+  <text x="550" y="68" text-anchor="middle" fill="#94A3B8" font-size="12" font-weight="500">Autonomous Pre-Production Screenplay Clearance &amp; E&amp;O Risk Copilot</text>
+  
+  <!-- Step 0: Ingestion -->
+  <g transform="translate(425, 95)">
+    <rect width="250" height="54" rx="8" fill="#1E293B" stroke="#334155" stroke-width="1.5"/>
+    <text x="125" y="24" text-anchor="middle" fill="#38BDF8" font-size="11" font-weight="700" letter-spacing="1">INPUT INGESTION</text>
+    <text x="125" y="42" text-anchor="middle" fill="#E2E8F0" font-size="13" font-weight="600">Screenplay (PDF / FDX / Fountain / TXT)</text>
+  </g>
+
+  <!-- Arrow down -->
+  <path d="M 550 149 L 550 178" stroke="#475569" stroke-width="2" />
+
+  <!-- Stage 1: Script Parser Agent -->
+  <g transform="translate(350, 178)">
+    <rect width="400" height="66" rx="10" fill="#0F172A" stroke="#3B82F6" stroke-width="2"/>
+    <circle cx="28" cy="33" r="14" fill="#1E3A8A"/>
+    <text x="28" y="38" text-anchor="middle" fill="#60A5FA" font-size="14">1</text>
+    <text x="54" y="28" fill="#93C5FD" font-size="11" font-weight="700" letter-spacing="0.5">STAGE 1 · SEQUENTIAL AGENT</text>
+    <text x="54" y="48" fill="#F8FAFC" font-size="15" font-weight="700">ScriptParserAgent (Google ADK)</text>
+    <text x="54" y="60" fill="#94A3B8" font-size="10">Extracts characters, brands, phone numbers, and title candidates</text>
+  </g>
+
+  <!-- Arrow down to fan-out -->
+  <path d="M 550 244 L 550 270" stroke="#475569" stroke-width="2"/>
+  <path d="M 210 270 L 890 270" stroke="#475569" stroke-width="2"/>
+  <path d="M 210 270 L 210 295" stroke="#475569" stroke-width="2"/>
+  <path d="M 550 270 L 550 295" stroke="#475569" stroke-width="2"/>
+  <path d="M 890 270 L 890 295" stroke="#475569" stroke-width="2"/>
+
+  <!-- Stage 2: ParallelAgent Container -->
+  <rect x="50" y="285" width="1000" height="185" rx="12" fill="#0B132B" stroke="#06B6D4" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <text x="75" y="310" fill="#22D3EE" font-size="12" font-weight="800" letter-spacing="1">STAGE 2 · CONCURRENT CLEARANCE TEAM (ParallelAgent Fan-Out)</text>
+
+  <!-- Specialist 1: Name Clearance -->
+  <g transform="translate(80, 325)">
+    <rect width="280" height="125" rx="8" fill="#1E293B" stroke="#475569" stroke-width="1.5"/>
+    <text x="16" y="24" fill="#34D399" font-size="11" font-weight="700">CHARACTER CLEARANCE AGENT</text>
+    <text x="16" y="44" fill="#F8FAFC" font-size="13" font-weight="700">NameClearanceAgent</text>
+    <text x="16" y="62" fill="#94A3B8" font-size="10">• Living public figure vetting</text>
+    <text x="16" y="78" fill="#94A3B8" font-size="10">• Restatement (Second) of Torts § 564</text>
+    <text x="16" y="94" fill="#94A3B8" font-size="10">• Soundex &amp; Levenshtein phonetic screening</text>
+    <text x="16" y="112" fill="#64748B" font-size="9.5">State: session.state["name_risks"]</text>
+  </g>
+
+  <!-- Specialist 2: Brand Clearance -->
+  <g transform="translate(410, 325)">
+    <rect width="280" height="125" rx="8" fill="#1E293B" stroke="#475569" stroke-width="1.5"/>
+    <text x="16" y="24" fill="#FBBF24" font-size="11" font-weight="700">BRAND &amp; TRADEMARK AGENT</text>
+    <text x="16" y="44" fill="#F8FAFC" font-size="13" font-weight="700">BrandClearanceAgent</text>
+    <text x="16" y="62" fill="#94A3B8" font-size="10">• Lanham Act § 43(c) dilution/tarnishment</text>
+    <text x="16" y="78" fill="#94A3B8" font-size="10">• NANPA 555-01XX fictional phone check</text>
+    <text x="16" y="94" fill="#94A3B8" font-size="10">• Built-in Greeking catalog alternatives</text>
+    <text x="16" y="112" fill="#64748B" font-size="9.5">State: session.state["brand_risks"]</text>
+  </g>
+
+  <!-- Specialist 3: Title Clearance -->
+  <g transform="translate(740, 325)">
+    <rect width="280" height="125" rx="8" fill="#1E293B" stroke="#475569" stroke-width="1.5"/>
+    <text x="16" y="24" fill="#A78BFA" font-size="11" font-weight="700">TITLE CLEARANCE AGENT</text>
+    <text x="16" y="44" fill="#F8FAFC" font-size="13" font-weight="700">TitleClearanceAgent</text>
+    <text x="16" y="62" fill="#94A3B8" font-size="10">• Rogers v. Grimaldi artistic relevance</text>
+    <text x="16" y="78" fill="#94A3B8" font-size="10">• MPA Title Registration Bureau audit</text>
+    <text x="16" y="94" fill="#94A3B8" font-size="10">• Reverse confusion &amp; theatrical art check</text>
+    <text x="16" y="112" fill="#64748B" font-size="9.5">State: session.state["title_risks"]</text>
+  </g>
+
+  <!-- External Grounding: Parallel MCP -->
+  <g transform="translate(280, 488)">
+    <rect width="540" height="42" rx="8" fill="#0C4A6E" stroke="#0284C7" stroke-width="1.5"/>
+    <text x="270" y="22" text-anchor="middle" fill="#38BDF8" font-size="11" font-weight="800" letter-spacing="1">GROUNDED VIA PARALLEL SEARCH MCP (search-mcp.parallel.ai/mcp)</text>
+    <text x="270" y="35" text-anchor="middle" fill="#BAE6FD" font-size="9.5">Real-time web search across USPTO/Justia trademarks, Wikipedia, LinkedIn &amp; news registries</text>
+  </g>
+
+  <!-- Connectors to Parallel MCP -->
+  <path d="M 220 450 L 220 475 L 350 475 L 350 488" stroke="#0284C7" stroke-width="1.5" stroke-dasharray="3,3"/>
+  <path d="M 550 450 L 550 488" stroke="#0284C7" stroke-width="1.5" stroke-dasharray="3,3"/>
+  <path d="M 880 450 L 880 475 L 750 475 L 750 488" stroke="#0284C7" stroke-width="1.5" stroke-dasharray="3,3"/>
+
+  <!-- Arrow down to Stage 3 -->
+  <path d="M 550 530 L 550 550" stroke="#475569" stroke-width="2"/>
+
+  <!-- Stage 3: Risk Synthesizer Agent -->
+  <g transform="translate(250, 550)">
+    <rect width="600" height="54" rx="8" fill="#0F172A" stroke="#10B981" stroke-width="2"/>
+    <circle cx="24" cy="27" r="12" fill="#065F46"/>
+    <text x="24" y="32" text-anchor="middle" fill="#6EE7B7" font-size="12">3</text>
+    <text x="48" y="22" fill="#6EE7B7" font-size="10" font-weight="700" letter-spacing="0.5">STAGE 3 · SEQUENTIAL SYNTHESIZER</text>
+    <text x="48" y="40" fill="#F8FAFC" font-size="14" font-weight="700">RiskSynthesizerAgent · Deterministic Scoring: 100 - (25H) - (10M) - (3L)</text>
+  </g>
+
+  <!-- Arrow down to Deliverable -->
+  <path d="M 550 604 L 550 622" stroke="#475569" stroke-width="2"/>
+
+  <!-- Deliverable: Clearance Dossier -->
+  <g transform="translate(320, 622)">
+    <rect width="460" height="38" rx="6" fill="#1E293B" stroke="#64748B" stroke-width="1"/>
+    <text x="230" y="24" text-anchor="middle" fill="#F8FAFC" font-size="12" font-weight="700">Studio Clearance Dossier · E&amp;O Underwriting Memo · PDF Export</text>
+  </g>
+</svg>
