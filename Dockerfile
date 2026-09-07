@@ -4,7 +4,7 @@ FROM python:3.11-slim
 
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
-    PORT=8000
+    PORT=8080
 
 WORKDIR /app
 
@@ -22,8 +22,8 @@ RUN pip install --no-cache-dir --upgrade pip && \
 # Copy application source code
 COPY . .
 
-# Expose server port
-EXPOSE 8000
+# Expose server port (Cloud Run standard: 8080)
+EXPOSE 8080
 
 # Start FastAPI application
 CMD exec uvicorn api.main:app --host 0.0.0.0 --port ${PORT}
