@@ -512,7 +512,26 @@ async function fetchAndRenderReport(analysisId) {
     document.getElementById("statSaved").textContent = report.stats.turnaround_saved || "5–10d";
     const durElem = document.getElementById("statDuration");
     if (durElem) {
-      durElem.textContent = elapsedSecs ? `${elapsedSecs}s` : "48.0s";
+      durElem.textContent = elapsedSecs ? `${elapsedSecs}s` : "75.7s";
+    }
+
+    // Dynamic Mathematical Calculation String
+    const highCount = report.stats.high_severity || 0;
+    const medCount = report.stats.medium_severity || 0;
+    const lowCount = report.stats.low_severity || 0;
+    const deductions = [];
+    if (highCount > 0) deductions.push(`(${highCount} HIGH × 25)`);
+    if (medCount > 0) deductions.push(`(${medCount} MED × 10)`);
+    if (lowCount > 0) deductions.push(`(${lowCount} LOW × 3)`);
+    const deductStr = deductions.length > 0 ? ` - ${deductions.join(' - ')}` : ' - 0';
+    
+    const formulaElem = document.getElementById("auditFormulaText");
+    if (formulaElem) {
+      formulaElem.innerHTML = `Base 100${deductStr} = <strong>${report.greenlight_score} / 100</strong> (Deterministic Score)`;
+    }
+    const gaugeCaption = document.getElementById("gaugeFormulaCaption");
+    if (gaugeCaption) {
+      gaugeCaption.textContent = `100${deductStr} = ${report.greenlight_score}`;
     }
 
     // Tab counts

@@ -204,10 +204,13 @@
           <div class="aperture-ring">
             <div class="aperture-ticks"></div>
             <div id="scoreGauge" class="gauge-circle red">
-              <span id="scoreVal" class="gauge-score">12</span>
+              <span id="scoreVal" class="gauge-score">0</span>
               <span class="gauge-label">GREENLIGHT INDEX</span>
               <span class="gauge-sub">BASE 100 RUBRIC</span>
             </div>
+          </div>
+          <div id="gaugeFormulaCaption" class="gauge-formula-caption">
+            100 − (4×25) − (1×10) = 0
           </div>
         </div>
 
@@ -232,7 +235,7 @@
             <div class="callsheet-divider"></div>
             <div class="callsheet-item stat-card">
               <span class="callsheet-label">HIGH SEVERITY</span>
-              <span id="statHigh" class="callsheet-value text-red">3</span>
+              <span id="statHigh" class="callsheet-value text-red">4</span>
             </div>
             <div class="callsheet-divider"></div>
             <div class="callsheet-item stat-card">
@@ -242,7 +245,7 @@
             <div class="callsheet-divider"></div>
             <div class="callsheet-item stat-card">
               <span class="callsheet-label">LOW ADVISORY</span>
-              <span id="statLow" class="callsheet-value text-green">1</span>
+              <span id="statLow" class="callsheet-value text-green">0</span>
             </div>
             <div class="callsheet-divider"></div>
             <div class="callsheet-item stat-card">
@@ -252,8 +255,15 @@
             <div class="callsheet-divider"></div>
             <div class="callsheet-item stat-card">
               <span class="callsheet-label">PARALLEL RUNTIME</span>
-              <span id="statDuration" class="callsheet-value text-slate">48.0s</span>
+              <span id="statDuration" class="callsheet-value text-slate">75.7s</span>
             </div>
+          </div>
+
+          <!-- Live Auditable Math Formula Bar -->
+          <div class="audit-formula-bar" id="auditFormulaBar">
+            <span class="formula-icon">📐</span>
+            <span class="formula-label">AUDITABLE CALCULATION:</span>
+            <span class="formula-calc" id="auditFormulaText">Base 100 - (4 HIGH × 25) - (1 MED × 10) = <strong>0 / 100</strong> (Deterministic Score)</span>
           </div>
         </div>
       </div>

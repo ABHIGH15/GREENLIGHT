@@ -837,7 +837,22 @@ body {
 
 .gauge-box {
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
   justify-content: center;
+}
+
+.gauge-formula-caption {
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--text-faint);
+  letter-spacing: 0.04em;
+  padding: 0.25rem 0.75rem;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-hairline);
+  border-radius: 9999px;
 }
 
 /* Optical Camera Aperture Ring */
@@ -1002,6 +1017,48 @@ body {
 .text-green { color: var(--stamp-green) !important; }
 .text-cyan { color: var(--accent-cyan) !important; }
 .text-slate { color: var(--accent-slate) !important; }
+
+/* Live Auditable Math Formula Bar */
+.audit-formula-bar {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 1.1rem;
+  padding: 0.5rem 1rem;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-hairline);
+  border-radius: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  box-shadow: var(--shadow-subtle);
+  flex-wrap: wrap;
+}
+
+.formula-icon {
+  font-size: 0.95rem;
+}
+
+.formula-label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: var(--text-faint);
+  text-transform: uppercase;
+}
+
+.formula-calc {
+  font-family: var(--font-mono);
+  color: var(--text-main);
+  font-weight: 600;
+}
+
+.formula-calc strong {
+  color: var(--stamp-red);
+  font-weight: 800;
+}
+
 
 /* --------------------------------------------------------------------------
    Executive Underwriting Memorandum
