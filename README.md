@@ -7,6 +7,10 @@
 [![Partner: Parallel](https://img.shields.io/badge/Partner-Parallel%20MCP-06B6D4.svg)](https://docs.parallel.ai)
 [![Platform: Google Cloud](https://img.shields.io/badge/Google%20Cloud-Gemini%20ADK-blue.svg)](https://github.com/google/adk-python)
 
+<p align="center">
+  <img src="docs/greenlight_devpost_thumbnail.jpg" alt="GREENLIGHT Cover" width="100%" />
+</p>
+
 ---
 
 ## Executive Summary
