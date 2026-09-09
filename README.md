@@ -182,7 +182,7 @@ Click **"Load Landmine Demo Script"** and select **"Run Multi-Agent Clearance Au
 
 ### 5. Run the Automated Test Suites
 ```bash
-# Fast local regression suite (23 tests in 0.33s)
+# Fast local regression suite (24 tests in 0.34s)
 python -m unittest discover tests -v
 
 # Live agentic evaluation against Gemini 3.5 Flash Lite and Parallel Search MCP
